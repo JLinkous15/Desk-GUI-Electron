@@ -13,7 +13,7 @@ export const measurements = {
 const hexPalette = {
   primary: {
     light: '#3F6A84',
-    dark: '#4690BC'
+    dark: '#2C6684'
   },
   secondary: {
     light: '#c74836',
@@ -151,9 +151,9 @@ type ColorModeContextType = {
 
 export const ColorModeContext = createContext<ColorModeContextType>({} as ColorModeContextType)
 
-export const JLThemeProvider = ({ children }: ThemeProvider) => {
+export const DeskGuiThemeProvider = ({ children }: ThemeProvider) => {
   const localStorageItem = 'JLColorMode'
-  const [mode, setMode] = useState<PaletteMode>('light')
+  const [mode, setMode] = useState<PaletteMode>('dark')
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {

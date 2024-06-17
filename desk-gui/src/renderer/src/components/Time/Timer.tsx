@@ -1,20 +1,14 @@
 import AvTimerIcon from '@mui/icons-material/AvTimer'
+import ClearIcon from '@mui/icons-material/Clear'
 import FingerprintIcon from '@mui/icons-material/Fingerprint'
-import PauseIcon from '@mui/icons-material/Pause'
-import { Stack, styled } from '@mui/material'
+import PauseIcon from '@mui/icons-material/Pause';
+import { Stack, Typography, styled } from '@mui/material'
 import { useRef, useState } from 'react'
-import { TactileIconButton } from '../Common/TactileIconButton'
-import { TimerType } from './timerTypes'
+import { TactileIconButton } from '../Common/TactileIconButton';
 
 //Local parameterized measures to be used for rendering. Able to be reassigned programmatically
-let knobHandSize = window.innerHeight / 5
-let knobSize = window.innerHeight / 2
-
-type TimerKnobProps = {
-  timer: TimerType.TimeState
-  setTimerDrag: (newTime: { duration: number; totalTime: number }) => void
-  handleButton: () => void
-}
+const knobSize = window.innerHeight * 0.5
+const knobHandSize = knobSize * 0.16
 
 type Vertice = {
   dx: number
@@ -28,23 +22,29 @@ const TimerKnobHousing = styled(Stack)(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: '50%',
-  boxShadow: `inset 5px 5px 10px ${theme.palette.shadow}, inset -5px -5px 10px ${theme.palette.highlight}, -45px -45px 90px ${theme.palette.highlight}, 45px 45px 90px ${theme.palette.shadow}, inset 75px 75px 150px ${theme.palette.highlight}, inset -75px -75px 150px ${theme.palette.shadow}`,
-  position: 'relative'
+  boxShadow: [
+    `${knobSize * 0.1}px ${knobSize * 0.1}px ${knobSize * 0.2}px ${theme.palette.shadow}`,
+    `-${knobSize * 0.1}px -${knobSize * 0.1}px ${knobSize * 0.2}px ${theme.palette.highlight}`,
+    `inset ${knobSize * 0.22}px ${knobSize * 0.22}px ${knobSize * 0.44}px ${theme.palette.shadow}`,
+    `inset -${knobSize * 0.22}px -${knobSize * 0.22}px ${knobSize * 0.44}px ${theme.palette.highlight}`,
+  ].join(','),
+  // border: `5px solid ${theme.palette.background.default}`,
+  position: 'relative',
 }))
 
 const TimerHand = styled(FingerprintIcon)(({ theme }) => ({
   height: knobHandSize,
   width: knobHandSize,
   position: 'absolute',
-  top: 30,
+  top: '10%',
   padding: 12,
   left: `calc(50% - ${knobHandSize / 2}px)`,
   cursor: 'move',
   userSelect: 'none',
   border: `2px solid ${theme.palette.primary.main}`,
   borderRadius: '50%',
-  color: theme.palette.primary.main,
-  backgroundColor: theme.palette.background.default
+  color: theme.palette.text.primary,
+  backgroundColor: theme.palette.primary.main,
 }))
 
 const TimerHandLine = styled('div')({
@@ -53,8 +53,10 @@ const TimerHandLine = styled('div')({
   border: `1px solid transparent`,
   position: 'absolute',
   top: `${knobSize / 3.4}px`,
-  left: '50%'
+  left: '50%',
 })
+
+console.log(knobSize)
 
 const getAngle = (point: Vertice) => {
   if (point.dx < 0 && point.dy > 0) {
@@ -69,50 +71,33 @@ const getAngle = (point: Vertice) => {
   return (Math.atan(point.dx / point.dy) * 180) / Math.PI
 }
 
-export const TimerKnob = ({ timer, setTimerDrag, handleButton }: TimerKnobProps) => {
+export const Timer = () => {
   const [isMouseDown, setIsMouseDown] = useState<boolean>(false)
   const parentElement = useRef(null)
   const handElement = useRef({
     dx: 0,
-    dy: 0
+    dy: 0,
   })
   const [vertices, setVertices] = useState<Vertice>({
     dx: 0,
     dy: 0,
-    angle: 0
+    angle: 0,
   })
-
-  console.log(knobSize)
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement> | undefined) => {
     if (e && parentElement.current) {
-      const parentEl: DOMRect = (parentElement.current as HTMLElement).getBoundingClientRect()
+      const parentEl: DOMRect = (
+        parentElement.current as HTMLElement
+      ).getBoundingClientRect()
       const parent = {
         dx: parentEl.x + parentEl.width / 2,
-        dy: parentEl.y + parentEl.height / 2
+        dy: parentEl.y + parentEl.height / 2,
       }
       setVertices((prev) => ({ ...prev, ...parent }))
       setIsMouseDown(true)
     }
   }
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement> | undefined) => {
-    if (isMouseDown && e) {
-      const verticesCopy = { ...vertices }
-      handElement.current = {
-        ...handElement.current,
-        dx: e.clientX - verticesCopy.dx,
-        dy: verticesCopy.dy - e.clientY
-      }
-      const angle = getAngle(handElement.current)
-      const newValue = {
-        duration: timer.totalTime * (angle / 360),
-        totalTime: timer.totalTime,
-        relativeAngle: angle
-      }
-      setTimerDrag(newValue)
-    }
-  }
 
   const handleMouseUp = (e: React.MouseEvent<HTMLDivElement> | undefined) => {
     if (e) {
@@ -121,6 +106,7 @@ export const TimerKnob = ({ timer, setTimerDrag, handleButton }: TimerKnobProps)
   }
 
   return (
+    <>
     <TimerKnobHousing>
       <div
         ref={parentElement}
@@ -128,30 +114,23 @@ export const TimerKnob = ({ timer, setTimerDrag, handleButton }: TimerKnobProps)
           height: '100%',
           width: '100%',
           position: 'absolute',
-          transform: `rotate(${timer.relativeAngle}deg)`
         }}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
-      >
-        <TimerHand sx={{ transform: `rotate(-${timer.relativeAngle}deg)` }} />
-        <TimerHandLine />
+        >
       </div>
       <TactileIconButton
         size="large"
         color="primary"
-        onClick={handleButton}
         sx={{
           width: `${knobHandSize}px`,
-          height: `${knobHandSize}px`
+          height: `${knobHandSize}px`,
         }}
-      >
-        {!timer.isCounting || timer.duration === 0 ? (
-          <AvTimerIcon fontSize="large" />
-        ) : (
-          <PauseIcon fontSize="large" />
-        )}
+        >
       </TactileIconButton>
+      <TimerHand />
     </TimerKnobHousing>
+    <Typography fontSize={'48px'}>00:00:00</Typography>
+        </>
   )
 }

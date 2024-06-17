@@ -1,7 +1,5 @@
 /// <reference types="vite/client" />
 
-/// <reference types="vite/client" />
-
 export declare module '@mui/material/styles' {
   interface Palette {
     highlight: Palette
