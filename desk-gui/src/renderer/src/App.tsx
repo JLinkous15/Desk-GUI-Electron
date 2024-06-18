@@ -5,13 +5,13 @@ import React, { useState } from 'react'
 import { createContext } from 'react'
 
 type TabContextType = {
-  tab: number,
+  tab: number
   setTab: React.Dispatch<React.SetStateAction<number>>
 }
 
 const DOMDiv = styled('div')({
   height: '100%',
-  width: '100%',
+  width: '100%'
 })
 
 export const TabContext = createContext<TabContextType>({
