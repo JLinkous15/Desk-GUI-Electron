@@ -100,6 +100,7 @@ export const Timer = () => {
         dy: verticesCopy.dy - e.clientY
       }
       const angle = getAngle(handElement.current)
+      console.log(angle)
       const newValue = {
         duration: newTimer.totalTime * (angle / 360),
         totalTime: newTimer.totalTime,
@@ -155,7 +156,7 @@ export const Timer = () => {
                 fill: 'none',
                 stroke: `url(#Gradient1)`,
                 strokeDasharray: circumference,
-                strokeDashoffset: dashOffset,
+                strokeDashoffset: -dashOffset,
                 strokeLinecap: 'round'
               }}
             />
@@ -166,13 +167,13 @@ export const Timer = () => {
             height: '100%',
             width: '100%',
             position: 'absolute',
-            transform: `rotate(${-newTimer.relativeAngle}deg)`
+            transform: `rotate(${newTimer.relativeAngle}deg)`
           }}
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
         >
-          <TimerHand sx={{ transform: `rotate(${newTimer.relativeAngle}deg)` }} />
+          <TimerHand sx={{ transform: `rotate(-${newTimer.relativeAngle}deg)` }} />
         </div>
         <TactileIconButton
           size="large"

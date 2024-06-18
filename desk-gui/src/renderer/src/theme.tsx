@@ -84,6 +84,11 @@ const getTheme = (mode: PaletteMode) => ({
         })
   },
   components: {
+    CssBaseline: {
+      styleOverrides: {
+        cursor: "pointer"
+      }
+    },
     MuiAppBar: {
       styleOverrides: {
         colorPrimary: {

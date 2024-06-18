@@ -1,17 +1,14 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
-import IconButton from '@mui/material/IconButton'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
 import WidgetsIcon from '@mui/icons-material/Widgets'
 import OtherHousesIcon from '@mui/icons-material/OtherHouses'
 import EqualizerIcon from '@mui/icons-material/Equalizer'
 import SettingsIcon from '@mui/icons-material/Settings'
-import Brightness4Icon from '@mui/icons-material/Brightness4'
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { TabContext } from '@renderer/App'
 import { ColorModeSwitch } from './Common/ColorModeSwitch'
-import { Menu, MenuItem } from '@mui/material'
 
 const NavBar = styled(Box)(({ theme }) => {
   return {
@@ -33,6 +30,7 @@ export const Nav = () => {
   const { tab, setTab } = useContext(TabContext)
 
   const handleTabChange = (e: React.SyntheticEvent<Element, Event>, newValue: number) => {
+    e.preventDefault()
     setTab(newValue)
   }
 
