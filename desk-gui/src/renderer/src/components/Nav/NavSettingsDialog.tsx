@@ -1,41 +1,50 @@
-import { Dialog, DialogProps } from "@mui/material";
+import Dialog, { DialogProps } from "@mui/material/Dialog"
+import { useEffect, useState } from "react"
+import MonitorIcon from '@mui/icons-material/Monitor'
+import { Button, Stack, SvgIcon, Typography, useTheme } from "@mui/material"
 
-export const NavSettingsDialog = ({...props}: DialogProps) => {
-  return (
-    <Dialog {...props} fullScreen sx={{margin: '5%'}}>
-      Select monitor, set resolution, fullscreen or not, etc.
-    </Dialog>
-  )
+const handleWindowGetter = async () => {
+  //@ts-ignore
+  const isExtended = await window.screen.isExtended
+  
+  if (!isExtended) return
+  
+  //@ts-ignore
+  const details = await window.getScreenDetails()
+  return details
+  
 }
 
-// main.js
-// const {ipcMain} = require('electron')
+export const NavSettingsDialog = ({...props}: DialogProps) => {
+  const theme = useTheme()
+  const [monitors, setMonitors] = useState([])
 
-// ipcMain.on('resize-window', (event, width, height) => {
-//     let browserWindow = BrowserWindow.fromWebContents(event.sender)
-//     browserWindow.setSize(width,height)
-// })
-
-
-// Renderer
-// const {ipcRenderer} = require('electron');
-
-// // ...
-// ipcRenderer.send('resize-window', 1280, 720)
-
-
-// async function openWindow(){
-//   // Get screen info
-//   const details = await getScreenDetails();
-//   const secondScreen = details.screens[1];
-//   const {left} = secondScreen;
+  useEffect(() => {
+    handleWindowGetter()
+    .then((res) => setMonitors(res.screens))
+  }, [])
   
-//   // Open window
-//   const winProps = `left=${left},top=100,width=640,height=480`;
-//   const win = window.open(
-//     "https://www.google.com/",
-//     "My second screen window",
-//     winProps
-//   );
-//   }
-  
+  const handleScreenClick = ( index: number) => {
+    const monitor = monitors[index]
+    //@ts-ignore
+    window.resizeTo(monitor.width, monitor.height)
+    //@ts-ignore
+    window.moveTo(monitor.left, monitor.top)
+  }
+
+  return (
+    <Dialog {...props} fullScreen sx={{margin: '5%'}}>
+      <Stack direction={'row'} position={"relative"}>
+      {monitors.map((monitor, index) => {
+        return (
+          <Button key={index} onClick={() => handleScreenClick(index)} >
+            <SvgIcon component={MonitorIcon} sx={{fontSize: "300px", color: theme.palette.text.primary}} />
+            {/* @ts-ignore */}
+            <Typography position={"absolute"} color={theme.palette.text.primary}>{`${monitor.width} x ${monitor.height}`}</Typography>
+          </Button>
+        )
+      })}
+      </Stack>
+    </Dialog>
+  )
+}  
