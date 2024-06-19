@@ -8,8 +8,8 @@ export namespace TimerType {
   }
 
   export enum TimerEnum {
-    EGG = 'egg',
-    STEAK = 'steak'
+    POMODORO = 'pomodoro',
+    CUSTOM = 'custom',
   }
 
   export type TimerReducerAction = any
@@ -36,6 +36,6 @@ export namespace TimerType {
   export type Vertice = {
     dx: number
     dy: number
-    angle: number
+    angle?: number
   }
 }

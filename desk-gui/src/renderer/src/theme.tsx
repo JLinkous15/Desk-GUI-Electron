@@ -84,11 +84,6 @@ const getTheme = (mode: PaletteMode) => ({
         })
   },
   components: {
-    CssBaseline: {
-      styleOverrides: {
-        cursor: "pointer"
-      }
-    },
     MuiAppBar: {
       styleOverrides: {
         colorPrimary: {
@@ -137,12 +132,6 @@ const getTheme = (mode: PaletteMode) => ({
   },
   typography: {
     fontFamily: ['Montserrat', 'Space Mono', 'sans-serif'].join(',')
-    // h1: {
-    //   fontSize: '16px',
-    //   fontWeight: 500,
-    //   fontSpacing: '10px',
-    //   fontFamily: 'Montserrat',
-    // },
   }
 })
 

@@ -1,5 +1,5 @@
 import { styled } from '@mui/material'
-import { Nav } from './components/Nav'
+import { Nav } from './components/Nav/Nav'
 import { Time } from './components/Time/Time'
 import React, { useState } from 'react'
 import { createContext } from 'react'

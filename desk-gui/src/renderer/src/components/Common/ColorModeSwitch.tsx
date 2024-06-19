@@ -5,11 +5,11 @@ import Menu from '@mui/material/Menu'
 import { useTheme } from '@mui/material/styles'
 import Stack from '@mui/material/Stack'
 import Switch from '@mui/material/Switch'
-import { useContext, useState } from 'react'
+import { DetailedHTMLProps, HTMLAttributes, useContext, useState } from 'react'
 import { ColorModeContext } from '../../theme'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 
-export const ColorModeSwitch = () => {
+export const ColorModeSwitch = ({...props}: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) => {
   const { toggleColorMode } = useContext(ColorModeContext)
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const open = Boolean(anchorEl)
@@ -28,7 +28,7 @@ export const ColorModeSwitch = () => {
   const handleSwitch = () => toggleColorMode()
 
   return (
-    <>
+    <div {...props}>
       <IconButton onClick={handleMenuOpen}>
         <Brightness4Icon fontSize='large' />
       </IconButton>
@@ -43,6 +43,6 @@ export const ColorModeSwitch = () => {
           <ModeNightIcon  />
         </Stack>
       </Menu>
-    </>
+    </div>
   )
 }

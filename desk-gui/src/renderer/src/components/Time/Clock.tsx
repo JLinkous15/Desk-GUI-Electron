@@ -18,5 +18,5 @@ export const Clock = () => {
     }
   }, [])
 
-  return <Typography sx={{ fontSize: `calc(${window.innerHeight}px * 0.1)` }}>{ctime}</Typography>
+  return <Typography sx={{ fontSize: `calc(${window.innerHeight}px * 0.1)`, zIndex: 1000 }}>{ctime}</Typography>
 }

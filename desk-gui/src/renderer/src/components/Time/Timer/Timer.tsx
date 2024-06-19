@@ -1,12 +1,14 @@
 import AvTimerIcon from '@mui/icons-material/AvTimer'
-import ClearIcon from '@mui/icons-material/Clear'
 import FingerprintIcon from '@mui/icons-material/Fingerprint'
 import PauseIcon from '@mui/icons-material/Pause'
-import { Stack, Typography, styled, useTheme } from '@mui/material'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import { styled, useTheme } from '@mui/material/styles'
 import { Reducer, useEffect, useReducer, useRef, useState } from 'react'
 import { TactileIconButton } from '../../Common/TactileIconButton'
 import { TimerType } from './timerTypes'
-import { getAngle, initialTimer, timerReducer } from './TimerHelpers'
+import { getAngle, initialTimer, timeParser, timerReducer } from './TimerHelpers'
+import { TimerSelection } from './TimerSelection'
 
 const timerSize = window.innerHeight * 0.5
 const knobHandDiameter = timerSize * 0.74
@@ -46,19 +48,15 @@ const TimerHand = styled(FingerprintIcon)(({ theme }) => ({
 export const Timer = () => {
   const theme = useTheme()
   const [isMouseDown, setIsMouseDown] = useState<boolean>(false)
-  const TimerIntervalRef = useRef(null)
+  const TimerIntervalRef = useRef<NodeJS.Timeout | number | undefined>(undefined)
   const parentElement = useRef(null)
   const [vertices, setVertices] = useState<TimerType.Vertice>({
     dx: 0,
     dy: 0,
     angle: 0
   })
-  const handElement = useRef({
-    dx: 0,
-    dy: 0
-  })
-
   const [newTimer, dispatch] = useReducer<Reducer<any, any>>(timerReducer, initialTimer)
+
   const radius = knobHandDiameter / 2 - 20
   const circumference = radius * Math.PI * 2
   const dashOffset = circumference * (newTimer.relativeAngle / 360)
@@ -70,7 +68,7 @@ export const Timer = () => {
 
   if (newTimer.duration <= 1000) {
     clearInterval(TimerIntervalRef.current)
-    TimerIntervalRef.current = null
+    TimerIntervalRef.current = undefined
   }
 
   const setTimerDrag = (newTime: { duration: number; totalTime: number }) => {
@@ -84,8 +82,6 @@ export const Timer = () => {
         dx: parentEl.x + parentEl.width / 2,
         dy: parentEl.y + parentEl.height / 2
       }
-
-      console.log(parent)
       setVertices((prev) => ({ ...prev, ...parent }))
       setIsMouseDown(true)
     }
@@ -94,13 +90,11 @@ export const Timer = () => {
   const handleMouseMove = (e: any) => {
     if (isMouseDown && e) {
       const verticesCopy = { ...vertices }
-      handElement.current = {
-        ...handElement.current,
+      const variable = {
         dx: e.clientX - verticesCopy.dx,
         dy: verticesCopy.dy - e.clientY
       }
-      const angle = getAngle(handElement.current)
-      console.log(angle)
+      const angle = getAngle(variable)
       const newValue = {
         duration: newTimer.totalTime * (angle / 360),
         totalTime: newTimer.totalTime,
@@ -110,9 +104,22 @@ export const Timer = () => {
     }
   }
 
-  const handleMouseUp = (e: any) => {
-    if (e) {
+  const handleMouseUp = () => {
       setIsMouseDown(false)
+  }
+
+  const handleButton = () => {
+    if (!newTimer.isCounting && newTimer.duration > 0) {
+      dispatch({type: TimerType.TimerActionEnum.OPTIMISTIC_START})
+      const id = setInterval(() => {
+          dispatch({ type: TimerType.TimerActionEnum.START })
+      }, 1000)
+      TimerIntervalRef.current = id
+    } else if (newTimer.isCounting && newTimer.duration > 0) {
+      dispatch({type: TimerType.TimerActionEnum.PAUSE, value: TimerIntervalRef.current})
+      TimerIntervalRef.current = undefined
+    } else {
+      return
     }
   }
 
@@ -130,8 +137,8 @@ export const Timer = () => {
           >
             <defs>
               <linearGradient id="Gradient1">
-                <stop offset="0%" stopColor={theme.palette.primary.main + '50'} />
-                <stop offset="100%" stopColor={theme.palette.primary.main} />
+                <stop offset="0%" stopColor={theme.palette.primary.main} />
+                <stop offset="100%" stopColor={theme.palette.primary.main + '50'} />
               </linearGradient>
             </defs>
             <circle
@@ -154,7 +161,7 @@ export const Timer = () => {
               style={{
                 position: 'absolute',
                 fill: 'none',
-                stroke: `url(#Gradient1)`,
+                stroke: `${newTimer.duration && 'url(#Gradient1)'}`,
                 strokeDasharray: circumference,
                 strokeDashoffset: -dashOffset,
                 strokeLinecap: 'round'
@@ -170,21 +177,30 @@ export const Timer = () => {
             transform: `rotate(${newTimer.relativeAngle}deg)`
           }}
           onMouseDown={handleMouseDown}
+          onTouchStart={handleMouseDown}
           onMouseUp={handleMouseUp}
+          onTouchEnd={handleMouseUp}
           onMouseMove={handleMouseMove}
+          onTouchMove={handleMouseMove}
         >
           <TimerHand sx={{ transform: `rotate(-${newTimer.relativeAngle}deg)` }} />
         </div>
         <TactileIconButton
           size="large"
           color="primary"
+          onClick={handleButton}
           sx={{
             width: `${knobHandSize}px`,
             height: `${knobHandSize}px`
           }}
-        ></TactileIconButton>
+        >
+          {!newTimer.isCounting 
+          ? <AvTimerIcon sx={{color: "white"}} fontSize='large' /> 
+          : <PauseIcon sx={{color: "white"}} fontSize='large' />}
+        </TactileIconButton>
       </TimerKnobHousing>
-      <Typography fontSize={'48px'}>00:00:00</Typography>
+      <Typography fontSize={'48px'} sx={{zIndex: 1000}}>{timeParser(newTimer.duration)}</Typography>
+      <TimerSelection />
     </>
   )
 }

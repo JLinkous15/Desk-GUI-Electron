@@ -2,7 +2,7 @@ import { styled } from '@mui/material/styles'
 import { Clock } from './Clock'
 import { Timer } from './Timer/Timer'
 
-const TimeDiv = styled('div')(({ theme }) => ({
+const TimeDiv = styled('div')({
   position: 'fixed',
   right: 0,
   padding: '2%',
@@ -11,7 +11,7 @@ const TimeDiv = styled('div')(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'space-around',
   alignItems: 'center'
-}))
+})
 
 export const Time = () => {
   return (
