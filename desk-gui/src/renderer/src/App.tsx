@@ -1,8 +1,7 @@
-import { styled } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import { Nav } from './components/Nav/Nav'
 import { Time } from './components/Time/Time'
-import React, { useState } from 'react'
-import { createContext } from 'react'
+import React, { useState, createContext } from 'react'
 import { Widgets } from './components/Widgets/Widgets'
 import { Panels } from './panels/Panels'
 
@@ -18,7 +17,7 @@ const DOMDiv = styled('div')({
   height: '100dvh',
   width: '100%',
   padding: 30,
-  overflow: 'hidden',
+  overflow: 'hidden'
 })
 
 const PanelWindow = styled('div')({
@@ -27,7 +26,7 @@ const PanelWindow = styled('div')({
   gap: 30,
   height: '100dvh',
   overflow: 'hidden',
-  width: '100%',
+  width: '100%'
 })
 
 export const TabContext = createContext<TabContextType>({

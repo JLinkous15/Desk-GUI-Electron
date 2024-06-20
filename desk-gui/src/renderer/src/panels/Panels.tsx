@@ -1,19 +1,19 @@
-import { TabContext } from "@renderer/App"
-import { useContext, useState } from "react"
-import { Todos } from "./Todos/Todos"
-import { Sensors } from "./Sensors/Sensors"
-import { GoogleHome } from "./GoogleHome/GoogleHome"
-import { Stocks } from "./Stocks/Stocks"
-import { styled } from "@mui/material/styles"
-import { tabArray } from "@renderer/components/Nav/Nav"
+import { TabContext } from '@renderer/App'
+import { useContext, useState } from 'react'
+import { Todos } from './Todos/Todos'
+import { Sensors } from './Sensors/Sensors'
+import { GoogleHome } from './GoogleHome/GoogleHome'
+import { Stocks } from './Stocks/Stocks'
+import { styled } from '@mui/material/styles'
+import { tabArray } from '@renderer/components/Nav/Nav'
 
-const PanelBox = styled('div')(({theme}) => ({
-  border: `1px solid ${theme.palette.text.disabled}`, 
+const PanelBox = styled('div')(({ theme }) => ({
+  border: `1px solid ${theme.palette.text.disabled}`,
   height: 'calc(83.4% - 90px)'
 }))
 
 export const Panels = () => {
-  const {tab, setTab} = useContext(TabContext)
+  const { tab, setTab } = useContext(TabContext)
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
 
@@ -23,7 +23,7 @@ export const Panels = () => {
     setTouchEnd(null)
     setTouchStart(e.clientY)
   }
-  
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement> | undefined) => {
     if (!e) return
     setTouchEnd(e.clientY)
@@ -36,7 +36,7 @@ export const Panels = () => {
   }
 
   return (
-    <PanelBox onMouseDown={handleMouseDown}  onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
+    <PanelBox onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
       {tab === 0 && <Todos />}
       {tab === 1 && <GoogleHome />}
       {tab === 2 && <Sensors />}

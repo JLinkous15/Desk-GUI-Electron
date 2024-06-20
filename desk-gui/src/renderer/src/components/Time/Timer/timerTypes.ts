@@ -9,7 +9,7 @@ export namespace TimerType {
 
   export enum TimerEnum {
     POMODORO = 'pomodoro',
-    CUSTOM = 'custom',
+    CUSTOM = 'custom'
   }
 
   export type TimerReducerAction = any

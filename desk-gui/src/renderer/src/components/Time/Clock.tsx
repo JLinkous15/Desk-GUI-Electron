@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import Typography from '@mui/material/Typography'
 import { useEffect, useRef, useState } from 'react'
 
 let time = new Date().toLocaleTimeString()
@@ -18,5 +18,9 @@ export const Clock = () => {
     }
   }, [])
 
-  return <Typography variant='h1' noWrap sx={{ zIndex: 1000 }}>{ctime}</Typography>
+  return (
+    <Typography variant="h1" noWrap sx={{ zIndex: 1000 }}>
+      {ctime}
+    </Typography>
+  )
 }
