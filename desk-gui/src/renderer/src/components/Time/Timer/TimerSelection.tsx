@@ -1,6 +1,7 @@
 import { Dialog, InputAdornment, MenuItem, Stack, TextField, TextFieldProps, useTheme } from "@mui/material"
 import { TimerType } from "./timerTypes"
 import { useState } from "react"
+import { CenterFocusStrong } from "@mui/icons-material"
 
 type TimerInterval = {
   type: TimerType.TimerEnum | string,
@@ -55,7 +56,7 @@ export const TimerSelection = ({...props}: TextFieldProps) => {
       select
       InputLabelProps={{
         style: {
-          color: theme.palette.text.primary
+          color: theme.palette.text.primary,
         }
       }}
       {...props}>
@@ -75,7 +76,7 @@ export const TimerSelection = ({...props}: TextFieldProps) => {
           label={"Work Interval"}
           InputLabelProps={{
             style: {
-              color: theme.palette.text.primary
+              color: theme.palette.text.primary,
             }
           }}
           InputProps={{

@@ -1,7 +1,6 @@
 import { styled, useTheme } from '@mui/material/styles'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
-import WidgetsIcon from '@mui/icons-material/Widgets'
 import OtherHousesIcon from '@mui/icons-material/OtherHouses'
 import EqualizerIcon from '@mui/icons-material/Equalizer'
 import SettingsIcon from '@mui/icons-material/Settings'
@@ -11,15 +10,15 @@ import { useContext, useState } from 'react'
 import { TabContext } from '@renderer/App'
 import { ColorModeSwitch } from '../Common/ColorModeSwitch'
 import { NavSettingsDialog } from './NavSettingsDialog'
+import { IconButton, Menu, MenuItem } from '@mui/material'
+import { Monitor } from '@mui/icons-material'
 
 const NavBar = styled('div')(({ theme }) => {
   return {
-    margin: '1rem',
-    position: 'fixed',
     display: 'flex',
     flexDirection: 'column',
-    left: 0,
-    height: `calc(100% - 2rem)`,
+    position: 'sticky',
+    height: '100%',
     border: `1px solid ${theme.palette.primary.main}`,
     background: `linear-gradient(195deg, ${theme.palette.primary.main + '90'}, ${theme.palette.primary.main + '30'})`,
     boxShadow: `16px 16px 16px ${theme.palette.shadow}`,
@@ -29,11 +28,7 @@ const NavBar = styled('div')(({ theme }) => {
   }
 })
 
-const tabArray = [
-  {
-    name: "Widgets",
-    icon: <WidgetsIcon fontSize="large" />,
-  },
+export const tabArray = [
   {
     name: "ToDos",
     icon: <FormatListBulletedIcon fontSize="large" />,
@@ -50,25 +45,37 @@ const tabArray = [
     name: "Stocks",
     icon: <TrendingUpIcon fontSize="large" />,
   },
-  {
-    name: "Settings",
-    icon: <SettingsIcon fontSize="large" />,
-  },
 ]
 
 export const Nav = () => {
   const theme = useTheme()
-  const [open, setOpen] = useState<boolean>(false)
+  const [settingsOpen, setSettingsOpen] = useState<boolean>(false)
+  const [anchorEl, setAnchorEl] = useState<any>(null)
   const { tab, setTab } = useContext(TabContext)
+  const menuOpen = Boolean(anchorEl)
 
   const handleTabChange = (e: React.SyntheticEvent<Element, Event>, newValue: number) => {
     e.preventDefault()
     setTab(newValue)
-    newValue === tabArray.length - 1 && setOpen(true)
   }
 
   const handleSettingsDialogClose = () => {
-    setOpen(false)
+    setSettingsOpen(false)
+  }
+
+  const handleSettingsClick = (e: React.MouseEvent<HTMLButtonElement> | undefined) => {
+    if (!e) return 
+    setSettingsOpen(true)
+    setAnchorEl(null)
+  }
+
+  const handleMenuClick = (e: React.MouseEvent<HTMLButtonElement> | undefined) => {
+    if (!e) return 
+    setAnchorEl(e.currentTarget)
+  }
+
+  const handleMenuClose = () => {
+    setAnchorEl(null)
   }
 
   const indicatorStyle = {
@@ -104,8 +111,20 @@ export const Nav = () => {
              />
           ))}
       </Tabs>
-      <ColorModeSwitch style={{alignSelf: "center", margin: '1rem'}} />
-      <NavSettingsDialog open={open} onClose={handleSettingsDialogClose} />
+      <IconButton onClick={handleMenuClick} style={{alignSelf: "center", margin: '1rem'}}>
+        <SettingsIcon fontSize="large" />
+      </IconButton>
+      <Menu open={menuOpen} anchorEl={anchorEl} onClose={handleMenuClose}>
+        <MenuItem>
+          <ColorModeSwitch />
+        </MenuItem>
+        <MenuItem>
+          <IconButton onClick={handleSettingsClick} sx={{width: '100%', alignSelf: 'center'}}>
+            <Monitor />
+          </IconButton>
+        </MenuItem>
+      </Menu>
+      <NavSettingsDialog open={settingsOpen} onClose={handleSettingsDialogClose} />
     </NavBar>
   )
 }

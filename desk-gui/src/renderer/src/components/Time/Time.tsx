@@ -3,11 +3,9 @@ import { Clock } from './Clock'
 import { Timer } from './Timer/Timer'
 
 const TimeDiv = styled('div')({
-  position: 'fixed',
-  right: 0,
-  padding: '2%',
   display: 'flex',
-  height: window.innerHeight,
+  height: '100%',
+  position: 'sticky',
   flexDirection: 'column',
   justifyContent: 'space-around',
   alignItems: 'center'

@@ -131,7 +131,21 @@ const getTheme = (mode: PaletteMode) => ({
     }
   },
   typography: {
-    fontFamily: ['Montserrat', 'Space Mono', 'sans-serif'].join(',')
+    fontFamily: ['Montserrat', 'Space Mono', 'sans-serif'].join(','),
+    h1: {
+      fontSize: '72px',
+      font: 'Montserrat',
+      fontWeight: '200'
+    },
+    h2: {
+      fontSize: '60px',
+      font: 'Montserrat',
+      fontWeight: '300'
+    },
+    body1: {
+      font: 'Space Mono',
+      fontSize: '28px'
+    }
   }
 })
 

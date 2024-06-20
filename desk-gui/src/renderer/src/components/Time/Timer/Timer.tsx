@@ -1,6 +1,7 @@
 import AvTimerIcon from '@mui/icons-material/AvTimer'
 import FingerprintIcon from '@mui/icons-material/Fingerprint'
 import PauseIcon from '@mui/icons-material/Pause'
+import RefreshIcon from '@mui/icons-material/Refresh';
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { styled, useTheme } from '@mui/material/styles'
@@ -9,10 +10,11 @@ import { TactileIconButton } from '../../Common/TactileIconButton'
 import { TimerType } from './timerTypes'
 import { getAngle, initialTimer, timeParser, timerReducer } from './TimerHelpers'
 import { TimerSelection } from './TimerSelection'
+import { IconButton } from '@mui/material'
 
 const timerSize = window.innerHeight * 0.5
 const knobHandDiameter = timerSize * 0.74
-const knobHandSize = timerSize * 0.16
+const knobHandSize = timerSize * 0.2
 
 const TimerKnobHousing = styled(Stack)(({ theme }) => ({
   width: `${timerSize}px`,
@@ -34,7 +36,7 @@ const TimerHand = styled(FingerprintIcon)(({ theme }) => ({
   height: knobHandSize,
   width: knobHandSize,
   position: 'absolute',
-  top: timerSize * 0.13,
+  top: knobHandSize / 2,
   padding: 12,
   left: `calc(50% - ${knobHandSize / 2}px)`,
   cursor: 'move',
@@ -75,7 +77,7 @@ export const Timer = () => {
     dispatch({ type: TimerType.TimerActionEnum.SET, value: newTime })
   }
 
-  const handleMouseDown = (e: any) => {
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement> | undefined) => {
     if (e && parentElement.current) {
       const parentEl: DOMRect = (parentElement.current as HTMLElement).getBoundingClientRect()
       const parent = {
@@ -87,7 +89,7 @@ export const Timer = () => {
     }
   }
 
-  const handleMouseMove = (e: any) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement> | undefined) => {
     if (isMouseDown && e) {
       const verticesCopy = { ...vertices }
       const variable = {
@@ -123,6 +125,10 @@ export const Timer = () => {
     }
   }
 
+  const handleResetButton = () => {
+    dispatch({type: TimerType.TimerActionEnum.RESET})
+  }
+
   return (
     <>
       <TimerKnobHousing>
@@ -144,7 +150,7 @@ export const Timer = () => {
             <circle
               cx={timerSize / 2}
               cy={timerSize / 2}
-              strokeWidth={'15px '}
+              strokeWidth={'10px '}
               strokeOpacity={'100%'}
               r={knobHandDiameter / 2 - 20}
               style={{
@@ -155,13 +161,13 @@ export const Timer = () => {
             <circle
               cx={timerSize / 2}
               cy={timerSize / 2}
-              strokeWidth={'15px'}
+              strokeWidth={'10px'}
               strokeOpacity={'100%'}
               r={knobHandDiameter / 2 - 20}
               style={{
                 position: 'absolute',
                 fill: 'none',
-                stroke: `${newTimer.duration && 'url(#Gradient1)'}`,
+                stroke: `${newTimer.duration ? 'url(#Gradient1)' : 'transparent'}`,
                 strokeDasharray: circumference,
                 strokeDashoffset: -dashOffset,
                 strokeLinecap: 'round'
@@ -177,11 +183,8 @@ export const Timer = () => {
             transform: `rotate(${newTimer.relativeAngle}deg)`
           }}
           onMouseDown={handleMouseDown}
-          onTouchStart={handleMouseDown}
           onMouseUp={handleMouseUp}
-          onTouchEnd={handleMouseUp}
           onMouseMove={handleMouseMove}
-          onTouchMove={handleMouseMove}
         >
           <TimerHand sx={{ transform: `rotate(-${newTimer.relativeAngle}deg)` }} />
         </div>
@@ -195,11 +198,20 @@ export const Timer = () => {
           }}
         >
           {!newTimer.isCounting 
-          ? <AvTimerIcon sx={{color: "white"}} fontSize='large' /> 
-          : <PauseIcon sx={{color: "white"}} fontSize='large' />}
+          ? <AvTimerIcon sx={{color: "white", fontSize: '48px'}} /> 
+          : <PauseIcon sx={{color: "white", fontSize: '48px'}} />}
         </TactileIconButton>
       </TimerKnobHousing>
-      <Typography fontSize={'48px'} sx={{zIndex: 1000}}>{timeParser(newTimer.duration)}</Typography>
+      <Stack direction="row">
+        <Typography fontSize={'48px'} sx={{zIndex: 1000, alignSelf: 'center', textAlign: 'center'}}>
+          {timeParser(newTimer.duration)}
+        </Typography>
+            {!newTimer.duration || 
+              <IconButton onClick={handleResetButton} sx={{position: 'absolute', right: 30}}>
+                <RefreshIcon sx={{fontSize: '48px'}} />
+              </IconButton>
+            }
+      </Stack>
       <TimerSelection />
     </>
   )
