@@ -1,18 +1,15 @@
-import { styled } from "@mui/material/styles"
-import { Clock } from "./Clock"
-import { Timer } from "./Timer"
+import { styled } from '@mui/material/styles'
+import { Clock } from './Clock'
+import { Timer } from './Timer/Timer'
 
-const TimeDiv = styled('div')(({ theme }) => ({
-  position: 'fixed',
-  right: 0,
-  padding: '2%',
+const TimeDiv = styled('div')({
   display: 'flex',
-  height: window.innerHeight,
+  height: '100%',
+  position: 'sticky',
   flexDirection: 'column',
   justifyContent: 'space-around',
-  alignItems: 'center',
-}))
-
+  alignItems: 'center'
+})
 
 export const Time = () => {
   return (

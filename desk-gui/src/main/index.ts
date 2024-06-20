@@ -12,13 +12,13 @@ function createWindow(): void {
     autoHideMenuBar: true,
     alwaysOnTop: true,
     skipTaskbar: true,
-    // frame: false,
+    frame: false,
     resizable: false,
     movable: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
+      sandbox: false,
     }
   })
 

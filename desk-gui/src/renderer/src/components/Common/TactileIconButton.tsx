@@ -1,5 +1,5 @@
-import IconButton from "@mui/material/IconButton"
-import { styled } from "@mui/material/styles"
+import IconButton from '@mui/material/IconButton'
+import { styled } from '@mui/material/styles'
 
 export const TactileIconButton = styled(IconButton)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -7,6 +7,6 @@ export const TactileIconButton = styled(IconButton)(({ theme }) => ({
   transition: '150ms ease-in-out',
   ' &:hover': {
     boxShadow: 'none',
-    transition: '150ms ease-in-out',
-  },
+    transition: '150ms ease-in-out'
+  }
 }))
