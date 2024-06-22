@@ -1,7 +1,7 @@
-import { Typography } from '@mui/material'
+import Typography from '@mui/material/Typography'
 import { useEffect, useRef, useState } from 'react'
 
-let time = new Date().toLocaleTimeString()
+let time = new Date().toLocaleTimeString().substring(0, 8)
 
 export const Clock = () => {
   const [ctime, setTime] = useState(time)
@@ -9,7 +9,7 @@ export const Clock = () => {
 
   const UpdateTime = () => {
     time = new Date().toLocaleTimeString()
-    setTime(time)
+    setTime(time.substring(0, 8))
   }
 
   useEffect(() => {
@@ -18,5 +18,9 @@ export const Clock = () => {
     }
   }, [])
 
-  return <Typography variant='h1' noWrap sx={{ zIndex: 1000 }}>{ctime}</Typography>
+  return (
+    <Typography variant="h1" noWrap sx={{ zIndex: 1000 }}>
+      {ctime}
+    </Typography>
+  )
 }

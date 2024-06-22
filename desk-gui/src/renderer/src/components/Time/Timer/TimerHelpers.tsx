@@ -1,11 +1,26 @@
-import { TimerType } from "./timerTypes"
+import { TimerType } from './timerTypes'
 
 export const initialTimer: TimerType.TimeState = {
   totalTime: 600000,
   duration: 0,
+  isWork: true,
+  type: undefined,
   relativeAngle: 0,
   isCounting: false
 }
+
+const timerIntervals = [
+  {
+    type: TimerType.TimerEnum.POMODORO,
+    work: 1500000,
+    rest: 300000
+  },
+  {
+    type: TimerType.TimerEnum.CUSTOM,
+    work: 0,
+    rest: 0
+  }
+]
 
 export const timeParser = (n: number) => {
   const seconds = Math.floor((n / 1000) % 60)
@@ -17,21 +32,18 @@ export const timeParser = (n: number) => {
   return `${minutes}:${seconds}`
 }
 
-export const timerReducer = (
-  state: TimerType.TimeState,
-  action: TimerType.TimerReducerAction,
-) => {
+export const timerReducer = (state: TimerType.TimeState, action: TimerType.TimerReducerAction) => {
   switch (action.type) {
     case TimerType.TimerActionEnum.SET:
       if (action.value) {
-        const {duration, totalTime} = action.value
+        const { duration, totalTime } = action.value
         return {
           ...state,
           relativeAngle: 360 * (duration / totalTime),
           totalTime: totalTime,
           duration: duration,
           isCounting: false,
-          timer: timeParser(duration),
+          timer: timeParser(duration)
         }
       }
       return state
@@ -39,14 +51,20 @@ export const timerReducer = (
       clearInterval(action.value)
       return initialTimer
     case TimerType.TimerActionEnum.OPTIMISTIC_START:
-      return {...state, isCounting: true}
+      return { ...state, isCounting: true }
     case TimerType.TimerActionEnum.PAUSE:
       clearInterval(action.value)
-      return {...state, isCounting: false}
+      return { ...state, isCounting: false }
     case TimerType.TimerActionEnum.START:
-        const newDuration = state.duration - 1000
-        const newAngle = (newDuration * 360 / state.totalTime)
-        return { ...state, duration: newDuration, relativeAngle: newAngle, timer: timeParser(newDuration), isCounting: true }
+      const newDuration = state.duration - 1000
+      const newAngle = (newDuration * 360) / state.totalTime
+      return {
+        ...state,
+        duration: newDuration,
+        relativeAngle: newAngle,
+        timer: timeParser(newDuration),
+        isCounting: true
+      }
     default:
       return state
   }
@@ -64,4 +82,3 @@ export const getAngle = (point: TimerType.Vertice) => {
   }
   return (Math.atan(point.dx / point.dy) * 180) / Math.PI
 }
-

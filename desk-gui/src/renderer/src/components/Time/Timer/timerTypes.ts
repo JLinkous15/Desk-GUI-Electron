@@ -9,7 +9,7 @@ export namespace TimerType {
 
   export enum TimerEnum {
     POMODORO = 'pomodoro',
-    CUSTOM = 'custom',
+    CUSTOM = 'custom'
   }
 
   export type TimerReducerAction = any
@@ -18,19 +18,9 @@ export namespace TimerType {
     totalTime: number
     duration: number
     relativeAngle: number
+    type: TimerType.TimerEnum | undefined
+    isWork: boolean
     isCounting: boolean
-  }
-
-  export type TimeTypePreset = {
-    label: string
-    duration: number
-  }
-
-  export type TimeTypeEntry = {
-    label: string
-    maxTime: number
-    presets: TimeTypePreset[]
-    body: string
   }
 
   export type Vertice = {

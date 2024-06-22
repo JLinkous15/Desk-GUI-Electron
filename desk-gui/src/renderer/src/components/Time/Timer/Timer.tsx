@@ -1,7 +1,7 @@
 import AvTimerIcon from '@mui/icons-material/AvTimer'
 import FingerprintIcon from '@mui/icons-material/Fingerprint'
 import PauseIcon from '@mui/icons-material/Pause'
-import RefreshIcon from '@mui/icons-material/Refresh';
+import RefreshIcon from '@mui/icons-material/Refresh'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { styled, useTheme } from '@mui/material/styles'
@@ -107,18 +107,18 @@ export const Timer = () => {
   }
 
   const handleMouseUp = () => {
-      setIsMouseDown(false)
+    setIsMouseDown(false)
   }
 
   const handleButton = () => {
     if (!newTimer.isCounting && newTimer.duration > 0) {
-      dispatch({type: TimerType.TimerActionEnum.OPTIMISTIC_START})
+      dispatch({ type: TimerType.TimerActionEnum.OPTIMISTIC_START })
       const id = setInterval(() => {
-          dispatch({ type: TimerType.TimerActionEnum.START })
+        dispatch({ type: TimerType.TimerActionEnum.START })
       }, 1000)
       TimerIntervalRef.current = id
     } else if (newTimer.isCounting && newTimer.duration > 0) {
-      dispatch({type: TimerType.TimerActionEnum.PAUSE, value: TimerIntervalRef.current})
+      dispatch({ type: TimerType.TimerActionEnum.PAUSE, value: TimerIntervalRef.current })
       TimerIntervalRef.current = undefined
     } else {
       return
@@ -126,54 +126,54 @@ export const Timer = () => {
   }
 
   const handleResetButton = () => {
-    dispatch({type: TimerType.TimerActionEnum.RESET})
+    dispatch({ type: TimerType.TimerActionEnum.RESET })
   }
 
   return (
     <>
       <TimerKnobHousing>
-          <svg
-            width={timerSize}
-            height={timerSize}
-            viewBox={`0 0 ${timerSize} ${timerSize}`}
+        <svg
+          width={timerSize}
+          height={timerSize}
+          viewBox={`0 0 ${timerSize} ${timerSize}`}
+          style={{
+            position: 'absolute',
+            transform: 'rotate(-90deg)'
+          }}
+        >
+          <defs>
+            <linearGradient id="Gradient1">
+              <stop offset="0%" stopColor={theme.palette.primary.main} />
+              <stop offset="100%" stopColor={theme.palette.primary.main + '50'} />
+            </linearGradient>
+          </defs>
+          <circle
+            cx={timerSize / 2}
+            cy={timerSize / 2}
+            strokeWidth={'10px '}
+            strokeOpacity={'100%'}
+            r={knobHandDiameter / 2 - 20}
+            style={{
+              fill: 'none',
+              stroke: `${theme.palette.highlight}`
+            }}
+          />
+          <circle
+            cx={timerSize / 2}
+            cy={timerSize / 2}
+            strokeWidth={'10px'}
+            strokeOpacity={'100%'}
+            r={knobHandDiameter / 2 - 20}
             style={{
               position: 'absolute',
-              transform: 'rotate(-90deg)'
+              fill: 'none',
+              stroke: `${newTimer.duration ? 'url(#Gradient1)' : 'transparent'}`,
+              strokeDasharray: circumference,
+              strokeDashoffset: -dashOffset,
+              strokeLinecap: 'round'
             }}
-          >
-            <defs>
-              <linearGradient id="Gradient1">
-                <stop offset="0%" stopColor={theme.palette.primary.main} />
-                <stop offset="100%" stopColor={theme.palette.primary.main + '50'} />
-              </linearGradient>
-            </defs>
-            <circle
-              cx={timerSize / 2}
-              cy={timerSize / 2}
-              strokeWidth={'10px '}
-              strokeOpacity={'100%'}
-              r={knobHandDiameter / 2 - 20}
-              style={{
-                fill: 'none',
-                stroke: `${theme.palette.highlight}`
-              }}
-            />
-            <circle
-              cx={timerSize / 2}
-              cy={timerSize / 2}
-              strokeWidth={'10px'}
-              strokeOpacity={'100%'}
-              r={knobHandDiameter / 2 - 20}
-              style={{
-                position: 'absolute',
-                fill: 'none',
-                stroke: `${newTimer.duration ? 'url(#Gradient1)' : 'transparent'}`,
-                strokeDasharray: circumference,
-                strokeDashoffset: -dashOffset,
-                strokeLinecap: 'round'
-              }}
-            />
-          </svg>
+          />
+        </svg>
         <div
           ref={parentElement}
           style={{
@@ -197,20 +197,25 @@ export const Timer = () => {
             height: `${knobHandSize}px`
           }}
         >
-          {!newTimer.isCounting 
-          ? <AvTimerIcon sx={{color: "white", fontSize: '48px'}} /> 
-          : <PauseIcon sx={{color: "white", fontSize: '48px'}} />}
+          {!newTimer.isCounting ? (
+            <AvTimerIcon sx={{ color: 'white', fontSize: '48px' }} />
+          ) : (
+            <PauseIcon sx={{ color: 'white', fontSize: '48px' }} />
+          )}
         </TactileIconButton>
       </TimerKnobHousing>
       <Stack direction="row">
-        <Typography fontSize={'48px'} sx={{zIndex: 1000, alignSelf: 'center', textAlign: 'center'}}>
+        <Typography
+          fontSize={'48px'}
+          sx={{ zIndex: 1000, alignSelf: 'center', textAlign: 'center' }}
+        >
           {timeParser(newTimer.duration)}
         </Typography>
-            {!newTimer.duration || 
-              <IconButton onClick={handleResetButton} sx={{position: 'absolute', right: 30}}>
-                <RefreshIcon sx={{fontSize: '48px'}} />
-              </IconButton>
-            }
+        {!newTimer.duration || (
+          <IconButton onClick={handleResetButton} sx={{ position: 'absolute', right: 30 }}>
+            <RefreshIcon sx={{ fontSize: '48px' }} />
+          </IconButton>
+        )}
       </Stack>
       <TimerSelection />
     </>

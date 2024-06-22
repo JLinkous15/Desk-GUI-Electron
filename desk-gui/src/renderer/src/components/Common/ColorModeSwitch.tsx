@@ -13,13 +13,10 @@ export const ColorModeSwitch = () => {
   const handleSwitch = () => toggleColorMode()
 
   return (
-        <Stack direction="row" alignItems="center" padding={2}>
-          <LightModeIcon  />
-          <Switch
-            checked={theme.palette.mode === 'dark'}
-            onChange={handleSwitch}
-          />
-          <ModeNightIcon  />
-        </Stack>
+    <Stack direction="row" alignItems="center" padding={2}>
+      <LightModeIcon />
+      <Switch checked={theme.palette.mode === 'dark'} onChange={handleSwitch} />
+      <ModeNightIcon />
+    </Stack>
   )
 }

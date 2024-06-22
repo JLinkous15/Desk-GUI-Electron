@@ -7,11 +7,13 @@ import SettingsIcon from '@mui/icons-material/Settings'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import { useContext, useState } from 'react'
-import { TabContext } from '@renderer/App'
 import { ColorModeSwitch } from '../Common/ColorModeSwitch'
 import { NavSettingsDialog } from './NavSettingsDialog'
-import { IconButton, Menu, MenuItem } from '@mui/material'
+import MenuItem from '@mui/material/MenuItem'
+import Menu from '@mui/material/Menu'
+import IconButton from '@mui/material/IconButton'
 import { Monitor } from '@mui/icons-material'
+import { TabContext } from '@renderer/App'
 
 const NavBar = styled('div')(({ theme }) => {
   return {
@@ -30,21 +32,21 @@ const NavBar = styled('div')(({ theme }) => {
 
 export const tabArray = [
   {
-    name: "ToDos",
-    icon: <FormatListBulletedIcon fontSize="large" />,
+    name: 'ToDos',
+    icon: <FormatListBulletedIcon fontSize="large" />
   },
   {
-    name: "Google Home",
-    icon: <OtherHousesIcon fontSize="large" />,
+    name: 'Google Home',
+    icon: <OtherHousesIcon fontSize="large" />
   },
   {
-    name: "Sensor Panel",
-    icon: <EqualizerIcon fontSize="large" />,
+    name: 'Sensor Panel',
+    icon: <EqualizerIcon fontSize="large" />
   },
   {
-    name: "Stocks",
-    icon: <TrendingUpIcon fontSize="large" />,
-  },
+    name: 'Stocks',
+    icon: <TrendingUpIcon fontSize="large" />
+  }
 ]
 
 export const Nav = () => {
@@ -64,13 +66,13 @@ export const Nav = () => {
   }
 
   const handleSettingsClick = (e: React.MouseEvent<HTMLButtonElement> | undefined) => {
-    if (!e) return 
+    if (!e) return
     setSettingsOpen(true)
     setAnchorEl(null)
   }
 
   const handleMenuClick = (e: React.MouseEvent<HTMLButtonElement> | undefined) => {
-    if (!e) return 
+    if (!e) return
     setAnchorEl(e.currentTarget)
   }
 
@@ -79,12 +81,12 @@ export const Nav = () => {
   }
 
   const indicatorStyle = {
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     border: `1px solid ${theme.palette.text.disabled}`,
     borderLeft: '7px solid white',
     boxShadow: `0 0 5px ${theme.palette.text.disabled}, inset 0 0 5px ${theme.palette.text.disabled}`,
     left: 0,
-    width: '100%',
+    width: '100%'
   }
 
   return (
@@ -95,11 +97,12 @@ export const Nav = () => {
         onChange={handleTabChange}
         selectionFollowsFocus
         TabIndicatorProps={{ style: indicatorStyle }}
-        sx={{height: '100%'}}>
-          {tabArray.map((tabListItem, index) => (
-            <Tab 
-            value={index} 
-            key={index} 
+        sx={{ height: '100%' }}
+      >
+        {tabArray.map((tabListItem, index) => (
+          <Tab
+            value={index}
+            key={index}
             icon={tabListItem.icon}
             sx={{
               backgroundColor: tab === index ? theme.palette.primary.main : undefined,
@@ -107,11 +110,11 @@ export const Nav = () => {
               '&:hover': {
                 backgroundColor: theme.palette.primary.main
               }
-            }} 
-             />
-          ))}
+            }}
+          />
+        ))}
       </Tabs>
-      <IconButton onClick={handleMenuClick} style={{alignSelf: "center", margin: '1rem'}}>
+      <IconButton onClick={handleMenuClick} style={{ alignSelf: 'center', margin: '1rem' }}>
         <SettingsIcon fontSize="large" />
       </IconButton>
       <Menu open={menuOpen} anchorEl={anchorEl} onClose={handleMenuClose}>
@@ -119,7 +122,7 @@ export const Nav = () => {
           <ColorModeSwitch />
         </MenuItem>
         <MenuItem>
-          <IconButton onClick={handleSettingsClick} sx={{width: '100%', alignSelf: 'center'}}>
+          <IconButton onClick={handleSettingsClick} sx={{ width: '100%', alignSelf: 'center' }}>
             <Monitor />
           </IconButton>
         </MenuItem>
