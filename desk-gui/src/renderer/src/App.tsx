@@ -1,9 +1,9 @@
 import { styled } from '@mui/material/styles'
-import { Nav } from './components/Nav/Nav'
-import { Time } from './components/Time/Time'
+import { Nav } from '@components/Nav/Nav'
+import { Time } from '@components/Time/Time'
 import React, { useState, createContext } from 'react'
-import { Widgets } from './components/Widgets/Widgets'
-import { Panels } from './panels/Panels'
+import { Widgets } from '@components/Widgets/Widgets'
+import { Panels } from '@panels/Panels'
 
 type TabContextType = {
   tab: number

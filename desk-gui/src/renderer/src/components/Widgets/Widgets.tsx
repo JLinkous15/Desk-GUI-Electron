@@ -19,25 +19,25 @@ export const Widgets = () => {
         height: '16%'
       }}
     >
-      <TactileIconButton size="large">
+      <TactileIconButton>
         <AcUnitIcon fontSize="large" />
       </TactileIconButton>
-      <TactileIconButton size="large">
+      <TactileIconButton>
         <AcUnitIcon fontSize="large" />
       </TactileIconButton>
-      <TactileIconButton size="large">
+      <TactileIconButton>
         <AcUnitIcon fontSize="large" />
       </TactileIconButton>
-      <TactileIconButton size="large">
+      <TactileIconButton>
         <AcUnitIcon fontSize="large" />
       </TactileIconButton>
-      <TactileIconButton size="large">
+      <TactileIconButton>
         <AcUnitIcon fontSize="large" />
       </TactileIconButton>
-      <TactileIconButton size="large">
+      <TactileIconButton>
         <AcUnitIcon fontSize="large" />
       </TactileIconButton>
-      <TactileIconButton size="large">
+      <TactileIconButton>
         <AcUnitIcon fontSize="large" />
       </TactileIconButton>
     </Stack>

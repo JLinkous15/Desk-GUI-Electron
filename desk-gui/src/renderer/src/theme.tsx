@@ -3,6 +3,7 @@ import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import createTheme from '@mui/material/styles/createTheme'
 import { PaletteMode, alpha } from '@mui/material'
 import { createContext, useEffect, useMemo, useState } from 'react'
+import { CheckBox } from '@mui/icons-material'
 
 export const measurements = {
   navbarSize: 60,
@@ -84,6 +85,11 @@ const getTheme = (mode: PaletteMode) => ({
         })
   },
   components: {
+    MuiCheckbox: {
+      styleOverrides: {
+        transform: 'scale(2)'
+      }
+    },
     MuiAppBar: {
       styleOverrides: {
         colorPrimary: {

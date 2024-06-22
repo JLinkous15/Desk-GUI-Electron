@@ -3,9 +3,24 @@ import { TimerType } from './timerTypes'
 export const initialTimer: TimerType.TimeState = {
   totalTime: 600000,
   duration: 0,
+  isWork: true,
+  type: undefined,
   relativeAngle: 0,
   isCounting: false
 }
+
+const timerIntervals = [
+  {
+    type: TimerType.TimerEnum.POMODORO,
+    work: 1500000,
+    rest: 300000
+  },
+  {
+    type: TimerType.TimerEnum.CUSTOM,
+    work: 0,
+    rest: 0
+  }
+]
 
 export const timeParser = (n: number) => {
   const seconds = Math.floor((n / 1000) % 60)

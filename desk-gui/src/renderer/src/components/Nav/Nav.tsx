@@ -7,13 +7,13 @@ import SettingsIcon from '@mui/icons-material/Settings'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import { useContext, useState } from 'react'
-import { TabContext } from '@renderer/App'
 import { ColorModeSwitch } from '../Common/ColorModeSwitch'
 import { NavSettingsDialog } from './NavSettingsDialog'
 import MenuItem from '@mui/material/MenuItem'
 import Menu from '@mui/material/Menu'
 import IconButton from '@mui/material/IconButton'
 import { Monitor } from '@mui/icons-material'
+import { TabContext } from '@renderer/App'
 
 const NavBar = styled('div')(({ theme }) => {
   return {
