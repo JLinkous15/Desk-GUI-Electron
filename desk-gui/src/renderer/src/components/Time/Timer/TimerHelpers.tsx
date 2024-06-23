@@ -9,18 +9,16 @@ export const initialTimer: TimerType.TimeState = {
   isCounting: false
 }
 
-const timerIntervals = [
-  {
-    type: TimerType.TimerEnum.POMODORO,
+export const defaultTimerIntervals = {
+  pomodoro: {
     work: 1500000,
     rest: 300000
   },
-  {
-    type: TimerType.TimerEnum.CUSTOM,
+  custom: {
     work: 0,
     rest: 0
   }
-]
+}
 
 export const timeParser = (n: number) => {
   const seconds = Math.floor((n / 1000) % 60)
@@ -36,12 +34,14 @@ export const timerReducer = (state: TimerType.TimeState, action: TimerType.Timer
   switch (action.type) {
     case TimerType.TimerActionEnum.SET:
       if (action.value) {
-        const { duration, totalTime } = action.value
+        const { duration, totalTime, type, isWork } = action.value
         return {
           ...state,
+          type,
+          isWork,
+          totalTime,
+          duration,
           relativeAngle: 360 * (duration / totalTime),
-          totalTime: totalTime,
-          duration: duration,
           isCounting: false,
           timer: timeParser(duration)
         }
@@ -56,13 +56,25 @@ export const timerReducer = (state: TimerType.TimeState, action: TimerType.Timer
       clearInterval(action.value)
       return { ...state, isCounting: false }
     case TimerType.TimerActionEnum.START:
-      const newDuration = state.duration - 1000
-      const newAngle = (newDuration * 360) / state.totalTime
+      const {...intervals} = action.value
+      let duration = state.duration - 1000
+      let relativeAngle = (duration * 360) / state.totalTime
+      let isWork = state.isWork
+      let totalTime = state.totalTime
+
+      if (duration < 0 && state.type) {
+        isWork = !state.isWork
+        duration = state.isWork ? intervals.current[state.type].rest : intervals.current[state.type].work
+        totalTime = duration
+        relativeAngle = 0
+      }
       return {
         ...state,
-        duration: newDuration,
-        relativeAngle: newAngle,
-        timer: timeParser(newDuration),
+        isWork: isWork,
+        relativeAngle: relativeAngle,
+        totalTime: totalTime,
+        duration: duration,
+        timer: timeParser(duration),
         isCounting: true
       }
     default:

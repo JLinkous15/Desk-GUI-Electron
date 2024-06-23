@@ -8,13 +8,15 @@ import { styled, useTheme } from '@mui/material/styles'
 import { Reducer, useEffect, useReducer, useRef, useState } from 'react'
 import { TactileIconButton } from '../../Common/TactileIconButton'
 import { TimerType } from './timerTypes'
-import { getAngle, initialTimer, timeParser, timerReducer } from './TimerHelpers'
+import { defaultTimerIntervals, getAngle, initialTimer, timeParser, timerReducer } from './TimerHelpers'
 import { TimerSelection } from './TimerSelection'
 import { IconButton } from '@mui/material'
 
-const timerSize = window.innerHeight * 0.5
-const knobHandDiameter = timerSize * 0.74
+const timerSize = window.innerHeight * 0.5 //360
+const knobHandDiameter = timerSize * 0.74 //266.4
 const knobHandSize = timerSize * 0.2
+const radius = timerSize * 0.314
+const circumference = radius * Math.PI * 2
 
 const TimerKnobHousing = styled(Stack)(({ theme }) => ({
   width: `${timerSize}px`,
@@ -49,9 +51,10 @@ const TimerHand = styled(FingerprintIcon)(({ theme }) => ({
 
 export const Timer = () => {
   const theme = useTheme()
-  const [isMouseDown, setIsMouseDown] = useState<boolean>(false)
   const TimerIntervalRef = useRef<NodeJS.Timeout | number | undefined>(undefined)
   const parentElement = useRef(null)
+  const [isMouseDown, setIsMouseDown] = useState<boolean>(false)
+  const timerInterval = useRef<TimerType.TimerIntervalObj>(defaultTimerIntervals)
   const [vertices, setVertices] = useState<TimerType.Vertice>({
     dx: 0,
     dy: 0,
@@ -59,22 +62,27 @@ export const Timer = () => {
   })
   const [newTimer, dispatch] = useReducer<Reducer<any, any>>(timerReducer, initialTimer)
 
-  const radius = knobHandDiameter / 2 - 20
-  const circumference = radius * Math.PI * 2
   const dashOffset = circumference * (newTimer.relativeAngle / 360)
 
   useEffect(() => {
-    //@ts-ignore
     clearInterval(TimerIntervalRef.current)
   }, [])
 
-  if (newTimer.duration <= 1000) {
-    clearInterval(TimerIntervalRef.current)
-    TimerIntervalRef.current = undefined
+  const setTimerDrag = (newValue: { duration: number, totalTime: number, type: TimerType.TimerEnum, isWork: boolean }) => {
+    dispatch({ type: TimerType.TimerActionEnum.SET, value: newValue })
   }
 
-  const setTimerDrag = (newTime: { duration: number; totalTime: number }) => {
-    dispatch({ type: TimerType.TimerActionEnum.SET, value: newTime })
+  const handleStart = () => {
+    dispatch({ type: TimerType.TimerActionEnum.OPTIMISTIC_START })
+    const id = setInterval(() => {
+      dispatch({ type: TimerType.TimerActionEnum.START, value: timerInterval })
+    }, 1000)
+    TimerIntervalRef.current = id
+  }
+
+  const handlePause = () => {
+    dispatch({ type: TimerType.TimerActionEnum.PAUSE, value: TimerIntervalRef.current })
+    TimerIntervalRef.current = undefined
   }
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement> | undefined) => {
@@ -86,6 +94,9 @@ export const Timer = () => {
       }
       setVertices((prev) => ({ ...prev, ...parent }))
       setIsMouseDown(true)
+      if (TimerIntervalRef.current){
+        handlePause()
+      }
     }
   }
 
@@ -97,10 +108,12 @@ export const Timer = () => {
         dy: verticesCopy.dy - e.clientY
       }
       const angle = getAngle(variable)
+
       const newValue = {
+        ...newTimer, 
         duration: newTimer.totalTime * (angle / 360),
         totalTime: newTimer.totalTime,
-        relativeAngle: angle
+        relativeAngle: angle,
       }
       setTimerDrag(newValue)
     }
@@ -111,22 +124,15 @@ export const Timer = () => {
   }
 
   const handleButton = () => {
-    if (!newTimer.isCounting && newTimer.duration > 0) {
-      dispatch({ type: TimerType.TimerActionEnum.OPTIMISTIC_START })
-      const id = setInterval(() => {
-        dispatch({ type: TimerType.TimerActionEnum.START })
-      }, 1000)
-      TimerIntervalRef.current = id
-    } else if (newTimer.isCounting && newTimer.duration > 0) {
-      dispatch({ type: TimerType.TimerActionEnum.PAUSE, value: TimerIntervalRef.current })
-      TimerIntervalRef.current = undefined
+    if (!newTimer.isCounting && newTimer.duration > 999) {
+      handleStart()
     } else {
-      return
+      handlePause()
     }
   }
 
   const handleResetButton = () => {
-    dispatch({ type: TimerType.TimerActionEnum.RESET })
+    dispatch({ type: TimerType.TimerActionEnum.RESET, value: TimerIntervalRef.current })
   }
 
   return (
@@ -207,17 +213,21 @@ export const Timer = () => {
       <Stack direction="row">
         <Typography
           fontSize={'48px'}
-          sx={{ zIndex: 1000, alignSelf: 'center', textAlign: 'center' }}
+          sx={{ zIndex: 1000, alignSelf: 'center', textAlign: 'center', color: !newTimer.isWork ? theme.palette.primary.main : "undefined" }}
         >
           {timeParser(newTimer.duration)}
         </Typography>
         {!newTimer.duration || (
           <IconButton onClick={handleResetButton} sx={{ position: 'absolute', right: 30 }}>
-            <RefreshIcon sx={{ fontSize: '48px' }} />
+            <RefreshIcon sx={{ fontSize: '48px', color: !newTimer.isWork ? theme.palette.primary.main : "undefined" }} />
           </IconButton>
         )}
       </Stack>
-      <TimerSelection />
+      <TimerSelection 
+      timerState={newTimer} 
+      dispatch={dispatch} 
+      timerInterval={timerInterval} 
+      />
     </>
   )
 }

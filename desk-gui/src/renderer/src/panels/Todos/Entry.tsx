@@ -1,4 +1,4 @@
-import Checkbox, {CheckboxProps} from '@mui/material/Checkbox'
+import Checkbox, { CheckboxProps } from '@mui/material/Checkbox'
 import FormControl from '@mui/material/FormControl'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
@@ -12,13 +12,14 @@ export const Entry = forwardRef(({ checked }: EntryProps) => {
   return (
     <Stack direction="row" gap="30px" alignItems={'center'} width={'calc(100% - 208px)'}>
       <FormControl
+      
         component={() => (
           <Checkbox
-            checked={true}
+            checked={checked}
             sx={{
               '& *': {
-                fill: checked ? theme.palette.primary.main : theme.palette.text.disabled,
-                fontSize: '40px'
+                fontSize: '40px',
+                fill: checked ? theme.palette.primary.main : theme.palette.text.disabled
               }
             }}
           />
