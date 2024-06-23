@@ -8,7 +8,13 @@ import { styled, useTheme } from '@mui/material/styles'
 import { Reducer, useEffect, useReducer, useRef, useState } from 'react'
 import { TactileIconButton } from '../../Common/TactileIconButton'
 import { TimerType } from './timerTypes'
-import { defaultTimerIntervals, getAngle, initialTimer, timeParser, timerReducer } from './TimerHelpers'
+import {
+  defaultTimerIntervals,
+  getAngle,
+  initialTimer,
+  timeParser,
+  timerReducer
+} from './TimerHelpers'
 import { TimerSelection } from './TimerSelection'
 import { IconButton } from '@mui/material'
 
@@ -68,7 +74,12 @@ export const Timer = () => {
     clearInterval(TimerIntervalRef.current)
   }, [])
 
-  const setTimerDrag = (newValue: { duration: number, totalTime: number, type: TimerType.TimerEnum, isWork: boolean }) => {
+  const setTimerDrag = (newValue: {
+    duration: number
+    totalTime: number
+    type: TimerType.TimerEnum
+    isWork: boolean
+  }) => {
     dispatch({ type: TimerType.TimerActionEnum.SET, value: newValue })
   }
 
@@ -94,7 +105,7 @@ export const Timer = () => {
       }
       setVertices((prev) => ({ ...prev, ...parent }))
       setIsMouseDown(true)
-      if (TimerIntervalRef.current){
+      if (TimerIntervalRef.current) {
         handlePause()
       }
     }
@@ -110,10 +121,10 @@ export const Timer = () => {
       const angle = getAngle(variable)
 
       const newValue = {
-        ...newTimer, 
+        ...newTimer,
         duration: newTimer.totalTime * (angle / 360),
         totalTime: newTimer.totalTime,
-        relativeAngle: angle,
+        relativeAngle: angle
       }
       setTimerDrag(newValue)
     }
@@ -175,7 +186,8 @@ export const Timer = () => {
               fill: 'none',
               stroke: `${newTimer.duration ? 'url(#Gradient1)' : 'transparent'}`,
               strokeDasharray: circumference,
-              strokeDashoffset: newTimer.duration === newTimer.totalTime ? circumference : -dashOffset,
+              strokeDashoffset:
+                newTimer.duration === newTimer.totalTime ? circumference : -dashOffset,
               strokeLinecap: 'round'
             }}
           />
@@ -213,21 +225,27 @@ export const Timer = () => {
       <Stack direction="row">
         <Typography
           fontSize={'48px'}
-          sx={{ zIndex: 1000, alignSelf: 'center', textAlign: 'center', color: !newTimer.isWork ? theme.palette.primary.main : "undefined" }}
+          sx={{
+            zIndex: 1000,
+            alignSelf: 'center',
+            textAlign: 'center',
+            color: !newTimer.isWork ? theme.palette.primary.main : 'undefined'
+          }}
         >
           {timeParser(newTimer.duration)}
         </Typography>
-        {newTimer.isCounting && (
+        {(newTimer.duration || newTimer.isCounting) && (
           <IconButton onClick={handleResetButton} sx={{ position: 'absolute', right: 30 }}>
-            <RefreshIcon sx={{ fontSize: '48px', color: !newTimer.isWork ? theme.palette.primary.main : "undefined" }} />
+            <RefreshIcon
+              sx={{
+                fontSize: '48px',
+                color: !newTimer.isWork ? theme.palette.primary.main : 'undefined'
+              }}
+            />
           </IconButton>
         )}
       </Stack>
-      <TimerSelection 
-      timerState={newTimer} 
-      dispatch={dispatch} 
-      timerInterval={timerInterval} 
-      />
+      <TimerSelection timerState={newTimer} dispatch={dispatch} timerInterval={timerInterval} />
     </>
   )
 }

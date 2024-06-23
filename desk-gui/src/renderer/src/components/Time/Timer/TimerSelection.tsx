@@ -8,8 +8,6 @@ import { TimerType } from './timerTypes'
 import React, { useState } from 'react'
 import Button from '@mui/material/Button'
 
-
-
 type TimerSelectionProps = {
   timerState: TimerType.TimeState
   dispatch: React.Dispatch<any>
@@ -30,9 +28,9 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
         isWork: true,
         type: TimerType.TimerEnum.POMODORO,
         duration: timerInterval.current.pomodoro.work,
-        totalTime: timerInterval.current.pomodoro.work,
+        totalTime: timerInterval.current.pomodoro.work
       }
-      dispatch({type: TimerType.TimerActionEnum.SET, value: dispatchValue})
+      dispatch({ type: TimerType.TimerActionEnum.SET, value: dispatchValue })
     } else if (timerType === TimerType.TimerEnum.CUSTOM) {
       setOpen(true)
     }
@@ -42,7 +40,9 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
     setOpen(false)
   }
 
-  const handleSetCustomTime = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined) => {
+  const handleSetCustomTime = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
+  ) => {
     if (!e) return
     console.log(timerInterval.current.custom[e.target.name])
     timerInterval.current.custom[e.target.name] = parseInt(e.target.value) * 60 * 1000
@@ -55,10 +55,10 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
       isWork: true,
       type: TimerType.TimerEnum.CUSTOM,
       duration: timerInterval.current.custom.work,
-      totalTime: timerInterval.current.custom.work,
+      totalTime: timerInterval.current.custom.work
     }
 
-    dispatch({type: TimerType.TimerActionEnum.SET, value: dispatchValue})
+    dispatch({ type: TimerType.TimerActionEnum.SET, value: dispatchValue })
     setOpen(false)
   }
 
@@ -103,7 +103,7 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
                 </InputAdornment>
               )
             }}
-            />
+          />
           <TextField
             name={'rest'}
             label={'Rest Interval'}
@@ -121,11 +121,12 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
               )
             }}
           />
-          <Button 
-          variant="tactile" 
-          onClick={handleCustomSubmitButton}
-          size={"large"}
-          disabled={!timerInterval.current.custom.rest || !timerInterval.current.custom.work}>
+          <Button
+            variant="tactile"
+            onClick={handleCustomSubmitButton}
+            size={'large'}
+            disabled={!timerInterval.current.custom.rest || !timerInterval.current.custom.work}
+          >
             Submit
           </Button>
         </Stack>

@@ -56,7 +56,7 @@ export const timerReducer = (state: TimerType.TimeState, action: TimerType.Timer
       clearInterval(action.value)
       return { ...state, isCounting: false }
     case TimerType.TimerActionEnum.START:
-      const {...intervals} = action.value
+      const { ...intervals } = action.value
       let duration = state.duration - 1000
       let relativeAngle = (duration * 360) / state.totalTime
       let isWork = state.isWork
@@ -64,7 +64,9 @@ export const timerReducer = (state: TimerType.TimeState, action: TimerType.Timer
 
       if (duration < 0 && state.type) {
         isWork = !state.isWork
-        duration = state.isWork ? intervals.current[state.type].rest : intervals.current[state.type].work
+        duration = state.isWork
+          ? intervals.current[state.type].rest
+          : intervals.current[state.type].work
         totalTime = duration
         relativeAngle = 0
       }

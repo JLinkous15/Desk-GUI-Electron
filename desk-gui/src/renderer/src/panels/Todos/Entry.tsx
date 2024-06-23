@@ -12,7 +12,6 @@ export const Entry = forwardRef(({ checked }: EntryProps) => {
   return (
     <Stack direction="row" gap="30px" alignItems={'center'} width={'calc(100% - 208px)'}>
       <FormControl
-      
         component={() => (
           <Checkbox
             checked={checked}

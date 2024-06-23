@@ -17,28 +17,28 @@ type Entries = ParentEntry[]
 
 const dummyData = [
   {
-    uuid: "1",
-    label: "Todo Number 1",
+    uuid: '1',
+    label: 'Todo Number 1',
     isComplete: false,
     isFrog: false,
     children: [
       {
-        uuid: "2",
-    label: "Todo Number 1",
-    isComplete: false,
+        uuid: '2',
+        label: 'Todo Number 1',
+        isComplete: false
       },
       {
-        uuid: "3",
-    label: "Todo Number 1",
-    isComplete: false,
+        uuid: '3',
+        label: 'Todo Number 1',
+        isComplete: false
       },
       {
-        uuid: "4",
-    label: "Todo Number 1",
-    isComplete: false,
-      },
+        uuid: '4',
+        label: 'Todo Number 1',
+        isComplete: false
+      }
     ]
-  },
+  }
 ]
 
 const StyledTodosDiv = styled('div')({
@@ -54,7 +54,6 @@ export const Todos = () => {
   return (
     <StyledTodosDiv>
       <AddRemoveButtons />
-
     </StyledTodosDiv>
   )
 }
