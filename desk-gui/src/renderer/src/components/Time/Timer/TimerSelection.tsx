@@ -44,7 +44,7 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
 
   const handleSetCustomTime = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined) => {
     if (!e) return
-
+    console.log(timerInterval.current.custom[e.target.name])
     timerInterval.current.custom[e.target.name] = parseInt(e.target.value) * 60 * 1000
   }
 
@@ -91,7 +91,6 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
             name={'work'}
             label={'Work Interval'}
             onChange={handleSetCustomTime}
-            value={timerInterval.current.custom.work}
             InputLabelProps={{
               style: {
                 color: theme.palette.text.primary
@@ -109,7 +108,6 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
             name={'rest'}
             label={'Rest Interval'}
             onChange={handleSetCustomTime}
-            value={timerInterval.current.custom.work}
             InputLabelProps={{
               style: {
                 color: theme.palette.text.primary
@@ -126,6 +124,7 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
           <Button 
           variant="tactile" 
           onClick={handleCustomSubmitButton}
+          size={"large"}
           disabled={!timerInterval.current.custom.rest || !timerInterval.current.custom.work}>
             Submit
           </Button>

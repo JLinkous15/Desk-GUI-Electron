@@ -175,7 +175,7 @@ export const Timer = () => {
               fill: 'none',
               stroke: `${newTimer.duration ? 'url(#Gradient1)' : 'transparent'}`,
               strokeDasharray: circumference,
-              strokeDashoffset: -dashOffset,
+              strokeDashoffset: newTimer.duration === newTimer.totalTime ? circumference : -dashOffset,
               strokeLinecap: 'round'
             }}
           />
@@ -217,7 +217,7 @@ export const Timer = () => {
         >
           {timeParser(newTimer.duration)}
         </Typography>
-        {!newTimer.duration || (
+        {newTimer.isCounting && (
           <IconButton onClick={handleResetButton} sx={{ position: 'absolute', right: 30 }}>
             <RefreshIcon sx={{ fontSize: '48px', color: !newTimer.isWork ? theme.palette.primary.main : "undefined" }} />
           </IconButton>
