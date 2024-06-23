@@ -2,37 +2,20 @@ import Dialog from '@mui/material/Dialog'
 import InputAdornment from '@mui/material/InputAdornment'
 import MenuItem from '@mui/material/MenuItem'
 import Stack from '@mui/material/Stack'
-import TextField, { TextFieldProps } from '@mui/material/TextField'
+import TextField from '@mui/material/TextField'
 import { useTheme } from '@mui/material/styles'
 import { TimerType } from './timerTypes'
-import { useState } from 'react'
+import React, { useState } from 'react'
+import Button from '@mui/material/Button'
 
-type TimerInterval = {
-  type: TimerType.TimerEnum | string
-  work: number
-  rest: number
+type TimerSelectionProps = {
+  timerState: TimerType.TimeState
+  dispatch: React.Dispatch<any>
+  timerInterval: React.MutableRefObject<TimerType.TimerIntervalObj>
 }
 
-const timerIntervals = [
-  {
-    type: TimerType.TimerEnum.POMODORO,
-    work: 1500000,
-    rest: 300000
-  },
-  {
-    type: TimerType.TimerEnum.CUSTOM,
-    work: 0,
-    rest: 0
-  }
-]
-
-export const TimerSelection = ({ ...props }: TextFieldProps) => {
+export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSelectionProps) => {
   const theme = useTheme()
-  const [timerInterval, setTimerInterval] = useState<TimerInterval>({
-    type: '',
-    work: 0,
-    rest: 0
-  })
   const [open, setOpen] = useState<boolean>(false)
 
   const handleTimerSelectChange = (
@@ -41,13 +24,41 @@ export const TimerSelection = ({ ...props }: TextFieldProps) => {
     if (!e) return
     const timerType = e.target.value
     if (timerType === TimerType.TimerEnum.POMODORO) {
+      const dispatchValue = {
+        isWork: true,
+        type: TimerType.TimerEnum.POMODORO,
+        duration: timerInterval.current.pomodoro.work,
+        totalTime: timerInterval.current.pomodoro.work
+      }
+      dispatch({ type: TimerType.TimerActionEnum.SET, value: dispatchValue })
     } else if (timerType === TimerType.TimerEnum.CUSTOM) {
       setOpen(true)
     }
-    setTimerInterval((prev) => ({ ...prev, type: timerType }))
   }
 
   const handleCustomTimerModalClose = () => {
+    setOpen(false)
+  }
+
+  const handleSetCustomTime = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
+  ) => {
+    if (!e) return
+    console.log(timerInterval.current.custom[e.target.name])
+    timerInterval.current.custom[e.target.name] = parseInt(e.target.value) * 60 * 1000
+  }
+
+  const handleCustomSubmitButton = (e: React.MouseEvent<HTMLButtonElement> | undefined) => {
+    if (!e) return
+
+    const dispatchValue = {
+      isWork: true,
+      type: TimerType.TimerEnum.CUSTOM,
+      duration: timerInterval.current.custom.work,
+      totalTime: timerInterval.current.custom.work
+    }
+
+    dispatch({ type: TimerType.TimerActionEnum.SET, value: dispatchValue })
     setOpen(false)
   }
 
@@ -56,7 +67,7 @@ export const TimerSelection = ({ ...props }: TextFieldProps) => {
       <TextField
         label={'Select A Timer'}
         onChange={handleTimerSelectChange}
-        value={timerInterval.type}
+        value={timerState.type}
         fullWidth
         select
         InputLabelProps={{
@@ -64,7 +75,6 @@ export const TimerSelection = ({ ...props }: TextFieldProps) => {
             color: theme.palette.text.primary
           }
         }}
-        {...props}
       >
         {Object.entries(TimerType.TimerEnum).map((entry, index) => {
           const [k, v] = entry
@@ -78,8 +88,9 @@ export const TimerSelection = ({ ...props }: TextFieldProps) => {
       <Dialog open={open} onClose={handleCustomTimerModalClose} sx={{ margin: '5% 20%' }}>
         <Stack direction={'column'} spacing={3} margin={5}>
           <TextField
-            name={'Work Interval'}
+            name={'work'}
             label={'Work Interval'}
+            onChange={handleSetCustomTime}
             InputLabelProps={{
               style: {
                 color: theme.palette.text.primary
@@ -94,8 +105,9 @@ export const TimerSelection = ({ ...props }: TextFieldProps) => {
             }}
           />
           <TextField
-            name={'Rest Interval'}
+            name={'rest'}
             label={'Rest Interval'}
+            onChange={handleSetCustomTime}
             InputLabelProps={{
               style: {
                 color: theme.palette.text.primary
@@ -109,6 +121,14 @@ export const TimerSelection = ({ ...props }: TextFieldProps) => {
               )
             }}
           />
+          <Button
+            variant="tactile"
+            onClick={handleCustomSubmitButton}
+            size={'large'}
+            disabled={!timerInterval.current.custom.rest || !timerInterval.current.custom.work}
+          >
+            Submit
+          </Button>
         </Stack>
       </Dialog>
     </>

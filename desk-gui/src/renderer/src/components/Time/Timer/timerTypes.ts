@@ -28,4 +28,11 @@ export namespace TimerType {
     dy: number
     angle?: number
   }
+
+  export type TimerInterval = {
+    work: number
+    rest: number
+  }
+
+  export type TimerIntervalObj = Record<TimerEnum, TimerInterval>
 }
