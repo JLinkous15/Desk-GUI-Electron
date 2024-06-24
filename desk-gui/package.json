@@ -25,6 +25,7 @@
     "@electron-toolkit/utils": "^3.0.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@mdxeditor/editor": "^3.6.0",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
     "electron-updater": "^6.1.7"

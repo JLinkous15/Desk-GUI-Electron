@@ -1,45 +1,8 @@
 import { styled } from '@mui/material'
-import { AddRemoveButtons } from './AddRemoveButtons'
-import { Entry } from './Entry'
-
-type IndvEntry = {
-  uuid?: string
-  label: string
-  isComplete: boolean
-}
-
-type ParentEntry = IndvEntry & {
-  children: IndvEntry[]
-  isFrog: boolean
-}
-
-type Entries = ParentEntry[]
-
-const dummyData = [
-  {
-    uuid: '1',
-    label: 'Todo Number 1',
-    isComplete: false,
-    isFrog: false,
-    children: [
-      {
-        uuid: '2',
-        label: 'Todo Number 1',
-        isComplete: false
-      },
-      {
-        uuid: '3',
-        label: 'Todo Number 1',
-        isComplete: false
-      },
-      {
-        uuid: '4',
-        label: 'Todo Number 1',
-        isComplete: false
-      }
-    ]
-  }
-]
+import { EditTodosButton } from './EditTodosButton'
+import { EditTodosDialog } from './EditTodosDialog'
+import { useState } from 'react'
+import { AbsoluteTopRight } from '@components/Common/AbsoluteTopRight'
 
 const StyledTodosDiv = styled('div')({
   width: '100%',
@@ -51,9 +14,24 @@ const StyledTodosDiv = styled('div')({
 })
 
 export const Todos = () => {
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false)
+
+  const handleDialogClick = () => {
+    setDialogOpen(true)
+  }
+
+  const handleDialogClose = () => {
+    setDialogOpen(false)
+  }
+
   return (
-    <StyledTodosDiv>
-      <AddRemoveButtons />
-    </StyledTodosDiv>
+    <>
+      <StyledTodosDiv>
+        <AbsoluteTopRight>
+          <EditTodosButton onClick={handleDialogClick} />
+        </AbsoluteTopRight>
+      </StyledTodosDiv>
+      <EditTodosDialog open={dialogOpen} onClose={handleDialogClose} />
+    </>
   )
 }

@@ -1,7 +1,8 @@
 import Typography from '@mui/material/Typography'
 import { useEffect, useRef, useState } from 'react'
 
-let time = new Date().toLocaleTimeString().substring(0, 8)
+let time = new Date().toLocaleTimeString()
+time = time.substring(0, 8)
 
 export const Clock = () => {
   const [ctime, setTime] = useState(time)

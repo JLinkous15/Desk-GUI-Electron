@@ -12,8 +12,7 @@ const Stocks = lazyImport('../panels/Stocks/Stocks.tsx', 'Stocks')
 
 const PanelBox = styled('div')(({ theme }) => ({
   border: `1px solid ${theme.palette.text.disabled}`,
-  height: 'calc(83.4% - 90px)',
-  padding: '30px'
+  height: 'calc(83.4% - 90px)'
 }))
 
 export const Panels = () => {
