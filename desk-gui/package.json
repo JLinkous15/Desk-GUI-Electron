@@ -28,7 +28,8 @@
     "@mdxeditor/editor": "^3.6.0",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
-    "electron-updater": "^6.1.7"
+    "electron-updater": "^6.1.7",
+    "fs-extra": "^11.2.0"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^2.0.0",
@@ -47,7 +48,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.3.3",
-    "vite": "^5.0.12"
+    "vite": "^5.0.12",
+    "vite-plugin-svgr": "3.3.0"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

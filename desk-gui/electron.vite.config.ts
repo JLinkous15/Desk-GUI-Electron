@@ -1,13 +1,14 @@
 import { resolve } from 'path'
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 import react from '@vitejs/plugin-react'
+import svgr from "vite-plugin-svgr"
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin()],
+    plugins: [externalizeDepsPlugin(), svgr({ include: "**/*.svg", svgrOptions: {plugins: ["@svgr/plugin-jsx"]}})],
     resolve: {
       alias: {
-        '@/lib': resolve('src/main/lib'),
+        '@lib': resolve('src/main/lib'),
         '@shared': resolve('src/shared'),
       }
     }

@@ -4,6 +4,9 @@ import { Time } from '@components/Time/Time'
 import React, { useState, createContext } from 'react'
 import { Widgets } from '@components/Widgets/Widgets'
 import { Panels } from '@panels/Panels'
+import SvgIcon from '@mui/material/SvgIcon'
+import Icon from '@mui/material/Icon'
+import {ReactComponent as Logo} from './assets/Logo.svg'
 
 type TabContextType = {
   tab: number
@@ -52,6 +55,7 @@ export const App = () => {
         </PanelWindow>
         <Time />
       </DOMDiv>
+      {/* <SvgIcon component={Logo} /> */}
     </TabContext.Provider>
   )
 }
