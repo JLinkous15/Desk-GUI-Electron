@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+/// <reference types="vite-plugin-svgr/client" />
 
 export declare module '@mui/material/styles' {
   interface Palette {

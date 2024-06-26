@@ -3,11 +3,12 @@ import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import createTheme from '@mui/material/styles/createTheme'
 import { PaletteMode, alpha } from '@mui/material'
 import { createContext, useEffect, useMemo, useState } from 'react'
-import { CheckBox } from '@mui/icons-material'
 
-export const measurements = {
+export const themeConstants = {
   navbarSize: 60,
-  navbarAdd: 150
+  navbarAdd: 150,
+  mdxClassname: "bananas",
+  scrollWidth: 35,
 }
 
 //palette options
@@ -85,6 +86,53 @@ const getTheme = (mode: PaletteMode) => ({
         })
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
+            backgroundColor:  mode === 'light' ? hexPalette.background.light : hexPalette.background.dark,
+            width: themeConstants.scrollWidth,
+          },
+          "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb": {
+            borderRadius: themeConstants.scrollWidth * 0.5,
+            backgroundColor: mode === 'light' ? alpha(hexPalette.text.light.primary, 0.12) : alpha(hexPalette.text.dark.primary, 0.12),
+            minHeight: themeConstants.scrollWidth * 0.5,
+          },
+          "&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus": {
+            backgroundColor: mode === 'light' ? alpha(hexPalette.text.light.primary, 0.21) : alpha(hexPalette.text.dark.primary, 0.21),
+          },
+          "&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active": {
+            backgroundColor: mode === 'light' ? alpha(hexPalette.text.light.primary, 0.21) : alpha(hexPalette.text.dark.primary, 0.21),
+          },
+          "&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: mode === 'light' ? alpha(hexPalette.text.light.primary, 0.21) : alpha(hexPalette.text.dark.primary, 0.21),
+          },
+          "&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner": {
+            backgroundColor: mode === 'light' ? alpha(hexPalette.text.light.primary, 0.21) : alpha(hexPalette.text.dark.primary, 0.21),
+          },
+        },
+        ['.' + themeConstants.mdxClassname + "[role='textbox']"]: {
+          border:`1px solid ${ mode === 'light' ? alpha(hexPalette.text.light.primary, 0.12) : alpha(hexPalette.text.dark.primary, 0.12)}`,
+          padding: '30px',
+          height: `calc(100vh * 0.75)`,
+          overflowY: 'auto',
+          overflowX: 'wrap',
+          borderRadius: 10,
+          // '&[style=user-select: text]': {
+          //   border: `1px solid ${ mode === 'light' ? hexPalette.primary.light : hexPalette.primary.dark }`
+          // },
+          '&:focus': {
+            border: `1px solid ${ mode === 'light' ? hexPalette.primary.light : hexPalette.primary.dark }`
+          },
+          '&:active': {
+            border: `1px solid ${ mode === 'light' ? hexPalette.primary.light : hexPalette.primary.dark }`
+          },
+          '& a': {
+            color:  mode === 'light' ? hexPalette.primary.light : hexPalette.primary.dark
+          }
+        },
+      }
+    },
     MuiCheckbox: {
       styleOverrides: {
         transform: 'scale(2)'

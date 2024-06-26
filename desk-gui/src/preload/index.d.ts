@@ -4,6 +4,9 @@ declare global {
   interface Window {
     electron: ElectronAPI
     api: unknown
-    context: {}
+    context: {
+      locale: string
+      getNotes: GetNotes
+    }
   }
 }

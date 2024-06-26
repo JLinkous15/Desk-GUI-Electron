@@ -2,6 +2,7 @@ import AcUnitIcon from '@mui/icons-material/AcUnit'
 import Stack from '@mui/material/Stack'
 import { useTheme } from '@mui/material/styles'
 import { TactileIconButton } from '../Common/TactileIconButton'
+import {exec} from "child_process"
 
 export const Widgets = () => {
   const theme = useTheme()

@@ -1,5 +1,6 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import { GetNotes } from '@shared/types'
 
 const api = {}
 
@@ -7,7 +8,10 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
-    contextBridge.exposeInMainWorld('context', {})
+    contextBridge.exposeInMainWorld('context', {
+      locale: navigator.language,
+      getNotes: (...args: Parameters<GetNotes>) => ipcRenderer.invoke('getNotes', ...args)
+    })
   } catch (error) {
     console.error(error)
   }

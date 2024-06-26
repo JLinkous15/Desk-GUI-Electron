@@ -125,7 +125,7 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
             variant="tactile"
             onClick={handleCustomSubmitButton}
             size={'large'}
-            disabled={!timerInterval.current.custom.rest || !timerInterval.current.custom.work}
+            // disabled={!timerInterval.current.custom.rest || !timerInterval.current.custom.work}
           >
             Submit
           </Button>

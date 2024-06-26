@@ -10,6 +10,9 @@ import {
   MDXEditorProps,
   BoldItalicUnderlineToggles
 } from '@mdxeditor/editor'
+import { useTheme } from '@mui/material'
+import { useEffect } from 'react'
+import { themeConstants } from '@renderer/theme'
 
 interface MarkdownEditorProps extends MDXEditorProps {
   markdown: string
@@ -25,7 +28,10 @@ const toolbarPluginWithProps = () =>
   })
 
 export const MarkdownEditor = ({ markdown, ...props }: MarkdownEditorProps) => {
+
   return (
+    <div style={{height: '100%'}}>
+
     <MDXEditor
       markdown={markdown}
       plugins={[
@@ -37,8 +43,10 @@ export const MarkdownEditor = ({ markdown, ...props }: MarkdownEditorProps) => {
         toolbarPluginWithProps(),
         imagePlugin()
       ]}
+      contentEditableClassName={themeConstants.mdxClassname}
       // iconComponentFor={}
       {...props}
-    />
+      />
+      </div>
   )
 }
