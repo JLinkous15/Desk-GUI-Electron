@@ -48,7 +48,6 @@ const handleVertices = (vertices, X, Y) => {
         ascii.splice(i+1, 1, newRow)
         verticePointer++
     }
-    console.log(sortedVertives)
         console.log(ascii.join("\n"))
     }
 
