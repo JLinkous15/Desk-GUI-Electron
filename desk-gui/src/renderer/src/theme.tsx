@@ -23,11 +23,11 @@ const hexPalette = {
   },
   highlight: {
     light: '#EFEFEF',
-    dark: '#292929'
+    dark: '#ffffff10'
   },
   shadow: {
     light: '#D0D0D0',
-    dark: '#161616'
+    dark: '#00000080'
   },
   background: {
     light: {

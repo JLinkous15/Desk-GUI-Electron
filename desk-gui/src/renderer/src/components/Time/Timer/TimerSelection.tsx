@@ -7,6 +7,9 @@ import { useTheme } from '@mui/material/styles'
 import { TimerType } from './timerTypes'
 import React, { useState } from 'react'
 import Button from '@mui/material/Button'
+import { StyledDialog } from '@components/Common/GlassDialog'
+import { GlassDialogContent } from '@components/Common/GlassDialogContent'
+import { Typography } from '@mui/material'
 
 type TimerSelectionProps = {
   timerState: TimerType.TimeState
@@ -44,7 +47,10 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
   ) => {
     if (!e) return
-    console.log(timerInterval.current.custom[e.target.name])
+    if (parseInt(e.target.value) < 0) {
+      e.preventDefault()
+      return
+    }
     timerInterval.current.custom[e.target.name] = parseInt(e.target.value) * 60 * 1000
   }
 
@@ -61,6 +67,12 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
     dispatch({ type: TimerType.TimerActionEnum.SET, value: dispatchValue })
     setOpen(false)
   }
+
+  const checkSpecialChar =(e)=>{
+    if(!/[0-9a-zA-Z]/.test(e.key)){
+     e.preventDefault()
+    }
+   }
 
   return (
     <>
@@ -85,12 +97,18 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
           )
         })}
       </TextField>
-      <Dialog open={open} onClose={handleCustomTimerModalClose} sx={{ margin: '5% 20%' }}>
+      <StyledDialog open={open} onClose={handleCustomTimerModalClose} fullScreen sx={{margin: '5rem 25rem'}}>
+        <GlassDialogContent handleClose={handleCustomTimerModalClose}>
         <Stack direction={'column'} spacing={3} margin={5}>
           <TextField
             name={'work'}
             label={'Work Interval'}
+            type="number"
             onChange={handleSetCustomTime}
+            onKeyDown={checkSpecialChar}
+            inputProps={{
+              min: 0,
+            }}
             InputLabelProps={{
               style: {
                 color: theme.palette.text.primary
@@ -99,7 +117,9 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end" sx={{ color: theme.palette.text.primary }}>
-                  min
+                  <Typography variant="body1">
+                    minutes
+                  </Typography>
                 </InputAdornment>
               )
             }}
@@ -107,7 +127,12 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
           <TextField
             name={'rest'}
             label={'Rest Interval'}
+            type="number"
             onChange={handleSetCustomTime}
+            onKeyDown={checkSpecialChar}
+            inputProps={{
+              min: 0,
+            }}
             InputLabelProps={{
               style: {
                 color: theme.palette.text.primary
@@ -116,7 +141,9 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end" sx={{ color: theme.palette.text.primary }}>
-                  min
+                  <Typography variant="body1">
+                    minutes
+                  </Typography>
                 </InputAdornment>
               )
             }}
@@ -125,12 +152,15 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
             variant="tactile"
             onClick={handleCustomSubmitButton}
             size={'large'}
-            // disabled={!timerInterval.current.custom.rest || !timerInterval.current.custom.work}
+            disabled={!(timerInterval.current.custom.rest > 0 && timerInterval.current.custom.work > 0)}
           >
-            Submit
+            <Typography variant="body1">
+              Submit
+            </Typography>
           </Button>
         </Stack>
-      </Dialog>
+        </GlassDialogContent>
+      </StyledDialog>
     </>
   )
 }

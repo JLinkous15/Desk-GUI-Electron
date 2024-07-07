@@ -5,7 +5,7 @@ import svgr from "vite-plugin-svgr"
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin(), svgr({ include: "**/*.svg", svgrOptions: {plugins: ["@svgr/plugin-jsx"]}})],
+    plugins: [react(), externalizeDepsPlugin(), svgr({ include: "**/*.svg", svgrOptions: {plugins: ["@svgr/plugin-jsx"]}})],
     resolve: {
       alias: {
         '@lib': resolve('src/main/lib'),
@@ -14,7 +14,7 @@ export default defineConfig({
     }
   },
   preload: {
-    plugins: [externalizeDepsPlugin()]
+    plugins: [externalizeDepsPlugin(), svgr()]
   },
   renderer: {
     assetsInclude: 'src/renderer/assets/**',
@@ -28,6 +28,6 @@ export default defineConfig({
         '@utils': resolve('src/renderer/src/utils'),
       }
     },
-    plugins: [react()]
+    plugins: [react(), svgr()]
   }
 })

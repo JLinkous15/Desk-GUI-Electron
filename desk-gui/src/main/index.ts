@@ -2,7 +2,8 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { getNotes } from '@/lib'
+//@ts-ignore
+import { getNotes } from '@lib'
 import { GetNotes } from '@shared/types'
 
 function createWindow(): void {

@@ -1,4 +1,4 @@
-import { styled } from '@mui/material/styles'
+import { styled, useTheme } from '@mui/material/styles'
 import { Nav } from '@components/Nav/Nav'
 import { Time } from '@components/Time/Time'
 import React, { useState, createContext } from 'react'
@@ -6,7 +6,7 @@ import { Widgets } from '@components/Widgets/Widgets'
 import { Panels } from '@panels/Panels'
 import SvgIcon from '@mui/material/SvgIcon'
 import Icon from '@mui/material/Icon'
-import {ReactComponent as Logo} from './assets/Logo.svg'
+import Logo from './assets/Logo.svg?react'
 
 type TabContextType = {
   tab: number
@@ -20,7 +20,8 @@ const DOMDiv = styled('div')({
   height: '100dvh',
   width: '100%',
   padding: 30,
-  overflow: 'hidden'
+  overflow: 'hidden',
+  position: 'relative'
 })
 
 const PanelWindow = styled('div')({
@@ -32,6 +33,10 @@ const PanelWindow = styled('div')({
   width: '100%'
 })
 
+const StyledLogo = styled(SvgIcon)({
+  position: 'absolute'
+})
+
 export const TabContext = createContext<TabContextType>({
   tab: 0,
   setTab: () => {}
@@ -39,6 +44,7 @@ export const TabContext = createContext<TabContextType>({
 
 export const App = () => {
   const [tab, setTab] = useState<number>(0)
+  const theme = useTheme()
 
   const tabValue = {
     tab,
@@ -54,8 +60,19 @@ export const App = () => {
           <Panels />
         </PanelWindow>
         <Time />
+      <SvgIcon 
+      component={Logo} 
+      inheritViewBox
+      sx={{
+        position: 'absolute',
+        fontSize: `720px`,
+        bottom: '-5%',
+        left: '-3%',
+        color: `${theme.palette.text.primary}07`,
+        pointerEvents: 'none'
+      }}
+      />
       </DOMDiv>
-      {/* <SvgIcon component={Logo} /> */}
     </TabContext.Provider>
   )
 }

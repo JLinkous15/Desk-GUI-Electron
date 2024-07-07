@@ -47,18 +47,16 @@ const indicatorStyle = {
 
 export const GlassDialogContent = ({
   children,
-  tabs,
-  buttons,
+  tabs = [],
+  buttons = [],
   handleClose,
   ...props
 }: CustomDialogContentProps) => {
 
-  const onMouseMove = (e) => {
-    return
-  }
+
   return (
-    <StyledBox {...props} onMouseMove={onMouseMove}>
-      {tabs.length > 0 && (
+    <StyledBox {...props}>
+      {(tabs && tabs.length) > 0 && (
         <StyledTabList flex={1}>
           <Tabs
             orientation="vertical"
@@ -78,7 +76,7 @@ export const GlassDialogContent = ({
               />
             ))}
           </Tabs>
-          {buttons && buttons.length > 0 && (
+          {buttons.length > 0 && (
             <AbsoluteTopRight>
               {buttons.map((button, index) => (
                 <IconButton key={index} onClick={button.onClick}>
@@ -89,7 +87,7 @@ export const GlassDialogContent = ({
           )}
         </StyledTabList>
       )}
-      <StyledTabPanel flex={4} sx={{ width: tabs.length > 0 ? '80%' : '100%' }}>
+      <StyledTabPanel flex={4} sx={{ width: tabs?.length > 0 ? '80%' : '100%' }}>
         <AbsoluteTopRight>
           {/* @ts-ignore using button close event to trigger modal close event */}
           <IconButton onClick={handleClose}>

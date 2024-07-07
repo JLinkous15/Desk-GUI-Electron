@@ -9,7 +9,7 @@
   "compilerOptions": {
     "composite": true,
     "types": [
-      "electron-vite/node"
+      "electron-vite/node", "vite-plugin-svgr/client"
     ],
     "baseUrl": ".",
     "paths": {
