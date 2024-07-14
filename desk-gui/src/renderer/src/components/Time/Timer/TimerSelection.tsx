@@ -47,10 +47,6 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
   ) => {
     if (!e) return
-    if (parseInt(e.target.value) < 0) {
-      e.preventDefault()
-      return
-    }
     timerInterval.current.custom[e.target.name] = parseInt(e.target.value) * 60 * 1000
   }
 
@@ -152,7 +148,6 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
             variant="tactile"
             onClick={handleCustomSubmitButton}
             size={'large'}
-            disabled={!(timerInterval.current.custom.rest > 0 && timerInterval.current.custom.work > 0)}
           >
             <Typography variant="body1">
               Submit
