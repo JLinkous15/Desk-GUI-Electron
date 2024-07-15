@@ -5,7 +5,6 @@ import React, { useState, createContext } from 'react'
 import { Widgets } from '@components/Widgets/Widgets'
 import { Panels } from '@panels/Panels'
 import SvgIcon from '@mui/material/SvgIcon'
-import Icon from '@mui/material/Icon'
 import Logo from './assets/Logo.svg?react'
 
 type TabContextType = {
@@ -31,10 +30,6 @@ const PanelWindow = styled('div')({
   height: '100dvh',
   overflow: 'hidden',
   width: '100%'
-})
-
-const StyledLogo = styled(SvgIcon)({
-  position: 'absolute'
 })
 
 export const TabContext = createContext<TabContextType>({
@@ -65,7 +60,7 @@ export const App = () => {
       inheritViewBox
       sx={{
         position: 'absolute',
-        fontSize: `720px`,
+        fontSize: `675px`,
         bottom: '-5%',
         left: '-3%',
         color: `${theme.palette.text.primary}07`,

@@ -1,8 +1,10 @@
-import { styled } from '@mui/material'
+import { styled, Typography } from '@mui/material'
 import { EditTodosButton } from './EditTodosButton'
 import { EditTodosDialog } from './EditTodosDialog'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AbsoluteTopRight } from '@components/Common/AbsoluteTopRight'
+import { loadNotes } from '../../store'
+import { NoteInfo } from '@shared/models'
 
 const StyledTodosDiv = styled('div')({
   width: '100%',
@@ -15,6 +17,7 @@ const StyledTodosDiv = styled('div')({
 
 export const Todos = () => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false)
+  const [notes, setNotes] = useState<NoteInfo[]>([])
 
   const handleDialogClick = () => {
     setDialogOpen(true)
@@ -24,12 +27,20 @@ export const Todos = () => {
     setDialogOpen(false)
   }
 
+  useEffect(() => {
+    loadNotes().then(res => {
+      setNotes(res)
+    })
+  }, [])
+
   return (
     <>
       <StyledTodosDiv>
         <AbsoluteTopRight>
           <EditTodosButton onClick={handleDialogClick} />
         </AbsoluteTopRight>
+        <Typography variant="body1">{notes[0]?.title}</Typography>
+        <Typography variant="body1">{Date(Math.floor(notes[0]?.lastEditTime)).toLocaleString()}</Typography>
       </StyledTodosDiv>
       <EditTodosDialog open={dialogOpen} onClose={handleDialogClose} />
     </>
