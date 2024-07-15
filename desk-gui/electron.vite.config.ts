@@ -5,6 +5,13 @@ import svgr from "vite-plugin-svgr"
 
 export default defineConfig({
   main: {
+    build: {
+      rollupOptions: {
+        input: {
+          index: resolve(__dirname, './src/main/index.ts')
+        }
+      }
+    },
     plugins: [react(), externalizeDepsPlugin(), svgr({ include: "**/*.svg", svgrOptions: {plugins: ["@svgr/plugin-jsx"]}})],
     resolve: {
       alias: {
@@ -14,9 +21,23 @@ export default defineConfig({
     }
   },
   preload: {
-    plugins: [externalizeDepsPlugin(), svgr()]
+    plugins: [externalizeDepsPlugin(), svgr()],
+    build: {
+      rollupOptions: {
+        input: {
+          index: resolve(__dirname, './src/preload/index.ts')
+        }
+      }
+    },
   },
   renderer: {
+    build: {
+      rollupOptions: {
+        input: {
+          index: resolve(__dirname, './src/renderer/index.html')
+        }
+      }
+    },
     assetsInclude: 'src/renderer/assets/**',
     resolve: {
       alias: {
