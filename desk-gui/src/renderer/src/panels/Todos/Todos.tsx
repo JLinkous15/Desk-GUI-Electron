@@ -49,7 +49,7 @@ export const Todos = () => {
       <StyledTodosDiv>
         <Typography variant="body1">{notes[frog]?.title || 'No Notes...'}</Typography>
         <Typography variant="body1">{notes[frog]?.lastEditTime || 'No Date...'}</Typography>
-        <Typography variant="body1">{notes[frog]?.content || 'No content...'}</Typography>
+        <Typography variant="body1">{notes[frog]?.content || 'No content..'}</Typography>
 
         <AbsoluteTopRight>
           <EditTodosButton onClick={handleDialogClick} />
