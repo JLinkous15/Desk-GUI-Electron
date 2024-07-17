@@ -6,9 +6,7 @@ const { ensureDir, readdir, stat, readFile } = fs
 import { homedir } from "os"
 
 //get the directory to store files -- .md formarkdown and .cmd for command
-export const getRootDir = () => {
-return `${homedir()}/${appDirectoryName}`
-}
+export const getRootDir = () => `${homedir()}/${appDirectoryName}`
 
 export const getNotes: GetNotes = async () => {
   const rootDir = getRootDir()
@@ -19,14 +17,14 @@ export const getNotes: GetNotes = async () => {
 
   const notes = notesFileNames.filter((note) => note.endsWith('.md'))
 
-  return Promise.all(notes.map(getNoteInforFromFilename))
+  return Promise.all(notes.map(getNoteInfoFromFilename))
 }
 
-export const getNoteInforFromFilename = async (fileName: string): Promise<NoteInfo> => {
+export const getNoteInfoFromFilename = async (fileName: string): Promise<NoteInfo> => {
   const fileStats = await stat(`${getRootDir()}/${fileName}`)
   return ({
     title: fileName.replace(/\.md$/, ''),
-    lastEditTime: fileStats.mtimeMs
+    lastEditTime: fileStats.birthtimeMs
   })
 }
 

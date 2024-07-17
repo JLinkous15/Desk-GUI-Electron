@@ -8,5 +8,5 @@ export const loadNotes = async (): Promise<NoteInfo[]> => {
 
 export const readNote = async (title: string) => {
   const noteContent = await window.context.readNote(title)
-  console.log(noteContent)
+  return noteContent
 }
