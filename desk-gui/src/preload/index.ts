@@ -11,7 +11,7 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('context', {
       locale: navigator.language,
       getNotes: (...args: Parameters<GetNotes>) => ipcRenderer.invoke('getNotes', ...args),
-      readNotes: (...args: Parameters<ReadNote>) => ipcRenderer.invoke('readNote', ...args),
+      readNote: (...args: Parameters<ReadNote>) => ipcRenderer.invoke('readNote', ...args),
     })
   } catch (error) {
     console.error(error)
