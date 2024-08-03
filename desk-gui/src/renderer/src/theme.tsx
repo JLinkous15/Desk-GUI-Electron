@@ -7,7 +7,6 @@ import { createContext, useEffect, useMemo, useState } from 'react'
 export const themeConstants = {
   navbarSize: 60,
   navbarAdd: 150,
-  mdxClassname: "bananas",
   scrollWidth: 35,
 }
 
@@ -110,25 +109,16 @@ const getTheme = (mode: PaletteMode) => ({
           "&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner": {
             backgroundColor: mode === 'light' ? alpha(hexPalette.text.light.primary, 0.21) : alpha(hexPalette.text.dark.primary, 0.21),
           },
-        },
-        ['.' + themeConstants.mdxClassname + "[role='textbox']"]: {
-          border:`1px solid ${ mode === 'light' ? alpha(hexPalette.text.light.primary, 0.12) : alpha(hexPalette.text.dark.primary, 0.12)}`,
-          padding: '30px',
-          height: `calc(100vh * 0.75)`,
-          overflowY: 'auto',
-          overflowX: 'wrap',
-          borderRadius: 10,
-          // '&[style=user-select: text]': {
-          //   border: `1px solid ${ mode === 'light' ? hexPalette.primary.light : hexPalette.primary.dark }`
-          // },
-          '&:focus': {
-            border: `1px solid ${ mode === 'light' ? hexPalette.primary.light : hexPalette.primary.dark }`
-          },
-          '&:active': {
-            border: `1px solid ${ mode === 'light' ? hexPalette.primary.light : hexPalette.primary.dark }`
-          },
-          '& a': {
-            color:  mode === 'light' ? hexPalette.primary.light : hexPalette.primary.dark
+          "& div.ProseMirror": {
+            // backgroundColor: "red",
+            margin:"0 30px",
+            width: "calc(100% - 120px - 30px)",
+            minHeight: "410px",
+            maxHeight: "410px",
+            overflow: "auto",
+            "&:focus": {
+              outline: `1px solid ${mode === 'light' ? alpha(hexPalette.text.light.primary, 0.21) : alpha(hexPalette.text.dark.primary, 0.21)}`
+            }
           }
         },
       }
@@ -187,18 +177,27 @@ const getTheme = (mode: PaletteMode) => ({
   typography: {
     fontFamily: ['Montserrat', 'Space Mono', 'sans-serif'].join(','),
     h1: {
-      fontSize: '72px',
       font: 'Montserrat',
-      fontWeight: '200'
+      fontSize: '52px',
+      lineHeight: '42px',
+      fontWeight: '400'
     },
     h2: {
-      fontSize: '60px',
       font: 'Montserrat',
-      fontWeight: '300'
+      fontWeight: '300',
+      lineHeight: '36px',
+      fontSize: '36px'
+    },
+    h3: {
+      font: 'Montserrat',
+      fontWeight: '300',
+      lineHeight: '30px',
+      fontSize: '30px'
     },
     body1: {
       font: 'Space Mono',
-      fontSize: '28px'
+      lineHeight: '24px',
+      fontSize: '24px'
     }
   }
 })

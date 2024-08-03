@@ -1,10 +1,13 @@
 import AcUnitIcon from '@mui/icons-material/AcUnit'
-import Stack from '@mui/material/Stack'
+import Stack, { StackProps } from '@mui/material/Stack'
 import { useTheme } from '@mui/material/styles'
 import { TactileIconButton } from '../Common/TactileIconButton'
-import {exec} from "child_process"
 
-export const Widgets = () => {
+interface WidgetsProps extends StackProps {
+
+}
+
+export const Widgets = ({...props}: WidgetsProps) => {
   const theme = useTheme()
   return (
     <Stack
@@ -15,9 +18,9 @@ export const Widgets = () => {
       alignItems={'center'}
       paddingX={4}
       gap={4}
+      {...props}
       sx={{
         border: `1px solid ${theme.palette.text.disabled}`,
-        height: '16%'
       }}
     >
       <TactileIconButton>
