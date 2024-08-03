@@ -1,61 +1,37 @@
-import { styled, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import { EditTodosButton } from '../../components/Common/EditTodosButton'
-import { EditTodosDialog } from './EditTodosDialog'
 import { useEffect, useState } from 'react'
-import { AbsoluteTopRight } from '@components/Common/AbsoluteTopRight'
-import { loadNotes, readNote } from '../../store'
 import { NoteInfo } from '@shared/models'
+import { FrogEditor } from '../../components/TextEditor/FrogEditor'
+import { JSONContent } from 'novel'
 
 type NoteInfoWithContent = NoteInfo & {
   content?: string
 }
 
+const localStorageMarkdown = 'deskControlMarkdown'
+
 const StyledTodosDiv = styled('div')({
-  width: '100%',
-  height: '100%',
   position: 'relative',
   display: 'flex',
-  flexDirection: 'column',
-  gap: '30px'
+  flexDirection: 'row',
+  height: '100%',
+  maxHeight: 'inherit',
+  justifyContent: 'space-between'
 })
 
 export const Todos = () => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false)
-  const [notes, setNotes] = useState<NoteInfoWithContent[]>([])
-  const [frog, setFrog] = useState<number>(0)
-
-  const handleDialogClick = () => {
-    setDialogOpen(true)
-  }
-
-  const handleDialogClose = () => {
-    setDialogOpen(false)
-  }
-
-  useEffect(() => {
-    loadNotes().then(res => {
-      setNotes(res)
-    })
-    Promise.all(notes.map((note, index) => (
-      readNote(note.title)
-      .then((res) => {
-        setNotes(prev => [...prev, prev[index].content = res])
-      })
-    )))
-  }, [])
+  const [markdown, setMarkdown] = useState({
+    type: "doc",
+    content: ""
+  })
 
   return (
-    <>
       <StyledTodosDiv>
-        <Typography variant="body1">{notes[frog]?.title || 'No Notes...'}</Typography>
-        <Typography variant="body1">{notes[frog]?.lastEditTime || 'No Date...'}</Typography>
-        <Typography variant="body1">{notes[frog]?.content || 'No content..'}</Typography>
-
-        <AbsoluteTopRight>
-          <EditTodosButton onClick={handleDialogClick} />
-        </AbsoluteTopRight>
+        <div style={{width: '100%', height: '100%', minHeight: 'inherit'}}>
+          <FrogEditor content={markdown} />
+        </div>
       </StyledTodosDiv>
-      <EditTodosDialog open={dialogOpen} onClose={handleDialogClose} />
-    </>
   )
 }

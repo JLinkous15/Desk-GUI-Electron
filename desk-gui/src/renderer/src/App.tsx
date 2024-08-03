@@ -12,13 +12,15 @@ type TabContextType = {
   setTab: React.Dispatch<React.SetStateAction<number>>
 }
 
+const padding = 30
+
 const DOMDiv = styled('div')({
   display: 'flex',
   justifyContent: 'space-between',
   gap: 30,
   height: '100dvh',
   width: '100%',
-  padding: 30,
+  padding: padding,
   overflow: 'hidden',
   position: 'relative'
 })
@@ -26,9 +28,8 @@ const DOMDiv = styled('div')({
 const PanelWindow = styled('div')({
   display: 'flex',
   flexDirection: 'column',
-  gap: 30,
-  height: '100dvh',
-  overflow: 'hidden',
+  gap: padding,
+  height: '100%',
   width: '100%'
 })
 
@@ -51,8 +52,8 @@ export const App = () => {
       <DOMDiv>
         <Nav />
         <PanelWindow>
-          <Widgets />
-          <Panels />
+          <Widgets flex={1} />
+          <Panels flex={5} />
         </PanelWindow>
         <Time />
       <SvgIcon 

@@ -1,6 +1,7 @@
 //Static Imports
 import { Suspense, useContext, useState } from 'react'
 import { styled } from '@mui/material/styles'
+import Stack, { StackProps } from '@mui/material/Stack'
 import { TabContext } from '@renderer/App'
 import { tabArray } from '@components/Nav/Nav'
 import { lazyImport } from '@utils/lazyImport'
@@ -10,12 +11,27 @@ const GoogleHome = lazyImport('../panels/GoogleHome/GoogleHome.tsx', 'GoogleHome
 const Sensors = lazyImport('../panels/Sensors/Sensors.tsx', 'Sensors')
 const Stocks = lazyImport('../panels/Stocks/Stocks.tsx', 'Stocks')
 
-const PanelBox = styled('div')(({ theme }) => ({
+interface PanelsProps extends StackProps {
+
+}
+
+const PanelBox = styled(Stack)(({ theme }) => ({
   border: `1px solid ${theme.palette.text.disabled}`,
-  height: 'calc(83.4% - 90px)'
+  height: '100%',
+  maxHeight: 'inherit',
+  position: 'relative'
 }))
 
-export const Panels = () => {
+const DottedLine = styled(Stack)(({theme}) => ({
+  background: `linear-gradient(${theme.palette.text.disabled}, ${theme.palette.text.disabled}) no-repeat center/1px 100%`,
+  width: 120,
+  height: '80%',
+  position: 'absolute',
+  right: 0,
+  top: "10%"
+}))
+
+export const Panels = ({...props}: PanelsProps) => {
   const { tab, setTab } = useContext(TabContext)
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
@@ -38,7 +54,9 @@ export const Panels = () => {
   }
 
   return (
-    <PanelBox onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
+    <PanelBox 
+    {...props}
+    >
       {tab === 0 && (
         <Suspense fallback={''}>
           <Todos />
@@ -59,6 +77,11 @@ export const Panels = () => {
           <Stocks />
         </Suspense>
       )}
+      <DottedLine
+        onMouseDown={handleMouseDown} 
+        onMouseMove={handleMouseMove} 
+        onMouseUp={handleMouseUp}
+      />
     </PanelBox>
   )
 }
