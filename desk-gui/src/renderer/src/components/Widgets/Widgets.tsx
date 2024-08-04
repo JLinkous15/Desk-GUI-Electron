@@ -3,11 +3,9 @@ import Stack, { StackProps } from '@mui/material/Stack'
 import { useTheme } from '@mui/material/styles'
 import { TactileIconButton } from '../Common/TactileIconButton'
 
-interface WidgetsProps extends StackProps {
+interface WidgetsProps extends StackProps {}
 
-}
-
-export const Widgets = ({...props}: WidgetsProps) => {
+export const Widgets = ({ ...props }: WidgetsProps) => {
   const theme = useTheme()
   return (
     <Stack
@@ -20,7 +18,7 @@ export const Widgets = ({...props}: WidgetsProps) => {
       gap={4}
       {...props}
       sx={{
-        border: `1px solid ${theme.palette.text.disabled}`,
+        border: `1px solid ${theme.palette.text.disabled}`
       }}
     >
       <TactileIconButton>

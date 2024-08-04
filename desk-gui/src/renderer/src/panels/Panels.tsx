@@ -1,5 +1,5 @@
 //Static Imports
-import { Suspense, useContext, useState } from 'react'
+import { Suspense, useContext, useRef, useState } from 'react'
 import { styled } from '@mui/material/styles'
 import Stack, { StackProps } from '@mui/material/Stack'
 import { TabContext } from '@renderer/App'
@@ -11,9 +11,7 @@ const GoogleHome = lazyImport('../panels/GoogleHome/GoogleHome.tsx', 'GoogleHome
 const Sensors = lazyImport('../panels/Sensors/Sensors.tsx', 'Sensors')
 const Stocks = lazyImport('../panels/Stocks/Stocks.tsx', 'Stocks')
 
-interface PanelsProps extends StackProps {
-
-}
+interface PanelsProps extends StackProps {}
 
 const PanelBox = styled(Stack)(({ theme }) => ({
   border: `1px solid ${theme.palette.text.disabled}`,
@@ -22,41 +20,39 @@ const PanelBox = styled(Stack)(({ theme }) => ({
   position: 'relative'
 }))
 
-const DottedLine = styled(Stack)(({theme}) => ({
+const DottedLine = styled(Stack)(({ theme }) => ({
   background: `linear-gradient(${theme.palette.text.disabled}, ${theme.palette.text.disabled}) no-repeat center/1px 100%`,
   width: 120,
-  height: '80%',
+  height: '88%',
   position: 'absolute',
   right: 0,
-  top: "10%"
+  top: '6%'
 }))
 
-export const Panels = ({...props}: PanelsProps) => {
+export const Panels = ({ ...props }: PanelsProps) => {
   const { tab, setTab } = useContext(TabContext)
-  const [touchStart, setTouchStart] = useState<number | null>(null)
-  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+  const touchStart = useRef<number | null>(null)
+  const touchEnd = useRef<number | null>(null)
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement> | undefined) => {
     if (!e) return
-    setTouchEnd(null)
-    setTouchStart(e.clientY)
+    touchEnd.current = null
+    touchStart.current = e.clientY
   }
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement> | undefined) => {
     if (!e) return
-    setTouchEnd(e.clientY)
+    touchEnd.current = e.clientY
   }
 
   const handleMouseUp = () => {
-    if (!touchStart || !touchEnd) return
-    if (touchStart - touchEnd > 0 && tab < tabArray.length - 1) setTab(tab + 1)
-    if (touchStart - touchEnd < 0 && tab > 0) setTab(tab - 1)
+    if (!touchStart.current || !touchEnd.current) return
+    if (touchStart.current - touchEnd.current > 0 && tab < tabArray.length - 1) setTab(tab + 1)
+    if (touchStart.current - touchEnd.current < 0 && tab > 0) setTab(tab - 1)
   }
 
   return (
-    <PanelBox 
-    {...props}
-    >
+    <PanelBox {...props}>
       {tab === 0 && (
         <Suspense fallback={''}>
           <Todos />
@@ -78,8 +74,8 @@ export const Panels = ({...props}: PanelsProps) => {
         </Suspense>
       )}
       <DottedLine
-        onMouseDown={handleMouseDown} 
-        onMouseMove={handleMouseMove} 
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
       />
     </PanelBox>

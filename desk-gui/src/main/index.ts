@@ -2,8 +2,8 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { GetNotes, ReadNote } from '@shared/types'
-import { getNotes, readNote } from './lib/index'
+import { GetGroupedDaily, GetNotes, ReadNote } from '@shared/types'
+import { getGroupedDaily, getNotes, readNote } from './lib/index'
 
 function createWindow(): void {
   // Create the browser window.
@@ -22,7 +22,7 @@ function createWindow(): void {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: true,
-      preload: join(__dirname, '../preload/index.js'),
+      preload: join(__dirname, '../preload/index.js')
     }
   })
 
@@ -61,6 +61,8 @@ app.whenReady().then(() => {
   ipcMain.handle('getNotes', (_, ...args: Parameters<GetNotes>) => getNotes(...args))
 
   ipcMain.handle('readNote', (_, ...args: Parameters<ReadNote>) => readNote(...args))
+  
+  ipcMain.handle('getDailyStocks', (_, ...args: Parameters<GetGroupedDaily>) => getGroupedDaily(...args))
 
   createWindow()
 
