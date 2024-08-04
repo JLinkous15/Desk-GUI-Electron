@@ -64,11 +64,11 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
     setOpen(false)
   }
 
-  const checkSpecialChar =(e)=>{
-    if(!/[0-9a-zA-Z]/.test(e.key)){
-     e.preventDefault()
+  const checkSpecialChar = (e) => {
+    if (!/[0-9a-zA-Z]/.test(e.key)) {
+      e.preventDefault()
     }
-   }
+  }
 
   return (
     <>
@@ -93,67 +93,62 @@ export const TimerSelection = ({ timerState, dispatch, timerInterval }: TimerSel
           )
         })}
       </TextField>
-      <StyledDialog open={open} onClose={handleCustomTimerModalClose} fullScreen sx={{margin: '5rem 25rem'}}>
+      <StyledDialog
+        open={open}
+        onClose={handleCustomTimerModalClose}
+        fullScreen
+        sx={{ margin: '5rem 25rem' }}
+      >
         <GlassDialogContent handleClose={handleCustomTimerModalClose}>
-        <Stack direction={'column'} spacing={3} margin={5}>
-          <TextField
-            name={'work'}
-            label={'Work Interval'}
-            type="number"
-            onChange={handleSetCustomTime}
-            onKeyDown={checkSpecialChar}
-            inputProps={{
-              min: 0,
-            }}
-            InputLabelProps={{
-              style: {
-                color: theme.palette.text.primary
-              }
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end" sx={{ color: theme.palette.text.primary }}>
-                  <Typography variant="body1">
-                    minutes
-                  </Typography>
-                </InputAdornment>
-              )
-            }}
-          />
-          <TextField
-            name={'rest'}
-            label={'Rest Interval'}
-            type="number"
-            onChange={handleSetCustomTime}
-            onKeyDown={checkSpecialChar}
-            inputProps={{
-              min: 0,
-            }}
-            InputLabelProps={{
-              style: {
-                color: theme.palette.text.primary
-              }
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end" sx={{ color: theme.palette.text.primary }}>
-                  <Typography variant="body1">
-                    minutes
-                  </Typography>
-                </InputAdornment>
-              )
-            }}
-          />
-          <Button
-            variant="tactile"
-            onClick={handleCustomSubmitButton}
-            size={'large'}
-          >
-            <Typography variant="body1">
-              Submit
-            </Typography>
-          </Button>
-        </Stack>
+          <Stack direction={'column'} spacing={3} margin={5}>
+            <TextField
+              name={'work'}
+              label={'Work Interval'}
+              type="number"
+              onChange={handleSetCustomTime}
+              onKeyDown={checkSpecialChar}
+              inputProps={{
+                min: 0
+              }}
+              InputLabelProps={{
+                style: {
+                  color: theme.palette.text.primary
+                }
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end" sx={{ color: theme.palette.text.primary }}>
+                    <Typography variant="body1">minutes</Typography>
+                  </InputAdornment>
+                )
+              }}
+            />
+            <TextField
+              name={'rest'}
+              label={'Rest Interval'}
+              type="number"
+              onChange={handleSetCustomTime}
+              onKeyDown={checkSpecialChar}
+              inputProps={{
+                min: 0
+              }}
+              InputLabelProps={{
+                style: {
+                  color: theme.palette.text.primary
+                }
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end" sx={{ color: theme.palette.text.primary }}>
+                    <Typography variant="body1">minutes</Typography>
+                  </InputAdornment>
+                )
+              }}
+            />
+            <Button variant="tactile" onClick={handleCustomSubmitButton} size={'large'}>
+              <Typography variant="body1">Submit</Typography>
+            </Button>
+          </Stack>
         </GlassDialogContent>
       </StyledDialog>
     </>

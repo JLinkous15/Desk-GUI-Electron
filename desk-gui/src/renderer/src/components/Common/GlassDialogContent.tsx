@@ -1,9 +1,12 @@
-import { IconButton, SvgIcon, Tab, Tabs } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 import Box, { BoxProps } from '@mui/material/Box'
+import IconButton from '@mui/material/IconButton'
 import { styled } from '@mui/material/styles'
+import SvgIcon from '@mui/material/SvgIcon'
+import Tab from '@mui/material/Tab'
+import Tabs from '@mui/material/Tabs'
 import { AbsoluteTopRight } from './AbsoluteTopRight'
 import { CommonComponentTypes } from './commonComponentTypes'
-import CloseIcon from '@mui/icons-material/Close'
 
 const StyledBox = styled(Box)({
   width: '100%',
@@ -35,7 +38,7 @@ interface CustomDialogContentProps extends BoxProps {
   children: React.ReactNode
   tabs?: any
   buttons?: CommonComponentTypes.GlassDialogTypes.GlassDialogButton[]
-  handleClose?: (event: {}, reason: "backdropClick" | "escapeKeyDown") => void
+  handleClose?: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void
 }
 
 const indicatorStyle = {
@@ -52,8 +55,6 @@ export const GlassDialogContent = ({
   handleClose,
   ...props
 }: CustomDialogContentProps) => {
-
-
   return (
     <StyledBox {...props}>
       {(tabs && tabs.length) > 0 && (
@@ -91,7 +92,7 @@ export const GlassDialogContent = ({
         <AbsoluteTopRight>
           {/* @ts-ignore using button close event to trigger modal close event */}
           <IconButton onClick={handleClose}>
-            <CloseIcon fontSize='large' />
+            <CloseIcon fontSize="large" />
           </IconButton>
         </AbsoluteTopRight>
         {children}

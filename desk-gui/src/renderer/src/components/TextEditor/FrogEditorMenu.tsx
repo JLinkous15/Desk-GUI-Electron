@@ -1,27 +1,18 @@
-import { useCurrentEditor } from "@tiptap/react"
-import Stack from "@mui/material/Stack"
-import Button from "@mui/material/Button"
-import styled from "@emotion/styled"
-import { editorExtensions } from "./EditorHelpers"
+import { useCurrentEditor } from '@tiptap/react'
+import Stack from '@mui/material/Stack'
+import Button from '@mui/material/Button'
+import styled from '@emotion/styled'
+import { editorExtensions, executeMethods } from './EditorHelpers'
 
 const StyledTextEditorButton = styled(Button)({
   borderRadius: 0,
-  padding: "15px 20px",
+  padding: '15px 20px'
 })
 
 export const FrogEditorMenu = () => {
   const { editor } = useCurrentEditor()
 
-  if (! editor) return
-
-  const executeMethods = (v, accumulator) => {
-    return v.methods.reduce((acc, [method, args]) => {
-      if (Object.keys(args).length) {
-        return acc[method](args)
-      }
-      return acc[method]()
-    }, accumulator)
-  }
+  if (!editor) return
 
   return (
     <Stack direction="row">
@@ -35,7 +26,8 @@ export const FrogEditorMenu = () => {
             sx={v.style}
           >
             {v.displayName}
-          </StyledTextEditorButton>)
+          </StyledTextEditorButton>
+        )
       })}
     </Stack>
   )

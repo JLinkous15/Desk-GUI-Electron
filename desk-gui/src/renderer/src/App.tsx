@@ -56,18 +56,18 @@ export const App = () => {
           <Panels flex={5} />
         </PanelWindow>
         <Time />
-      <SvgIcon 
-      component={Logo} 
-      inheritViewBox
-      sx={{
-        position: 'absolute',
-        fontSize: `675px`,
-        bottom: '-5%',
-        left: '-3%',
-        color: `${theme.palette.text.primary}07`,
-        pointerEvents: 'none'
-      }}
-      />
+        <SvgIcon
+          component={Logo}
+          inheritViewBox
+          sx={{
+            position: 'absolute',
+            fontSize: `675px`,
+            bottom: '-5%',
+            left: '-3%',
+            color: `${theme.palette.text.primary}07`,
+            pointerEvents: 'none'
+          }}
+        />
       </DOMDiv>
     </TabContext.Provider>
   )

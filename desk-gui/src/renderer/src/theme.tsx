@@ -7,7 +7,7 @@ import { createContext, useEffect, useMemo, useState } from 'react'
 export const themeConstants = {
   navbarSize: 60,
   navbarAdd: 150,
-  scrollWidth: 35,
+  scrollWidth: 35
 }
 
 //palette options
@@ -88,39 +88,64 @@ const getTheme = (mode: PaletteMode) => ({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
-            backgroundColor:  mode === 'light' ? hexPalette.background.light : hexPalette.background.dark,
-            width: themeConstants.scrollWidth,
+          '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
+            backgroundColor:
+              mode === 'light' ? hexPalette.background.light : hexPalette.background.dark,
+            width: themeConstants.scrollWidth
           },
-          "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb": {
+          '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
             borderRadius: themeConstants.scrollWidth * 0.5,
-            backgroundColor: mode === 'light' ? alpha(hexPalette.text.light.primary, 0.12) : alpha(hexPalette.text.dark.primary, 0.12),
-            minHeight: themeConstants.scrollWidth * 0.5,
+            backgroundColor:
+              mode === 'light'
+                ? alpha(hexPalette.text.light.primary, 0.12)
+                : alpha(hexPalette.text.dark.primary, 0.12),
+            minHeight: themeConstants.scrollWidth * 0.5
           },
-          "&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus": {
-            backgroundColor: mode === 'light' ? alpha(hexPalette.text.light.primary, 0.21) : alpha(hexPalette.text.dark.primary, 0.21),
+          '&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus': {
+            backgroundColor:
+              mode === 'light'
+                ? alpha(hexPalette.text.light.primary, 0.21)
+                : alpha(hexPalette.text.dark.primary, 0.21)
           },
-          "&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active": {
-            backgroundColor: mode === 'light' ? alpha(hexPalette.text.light.primary, 0.21) : alpha(hexPalette.text.dark.primary, 0.21),
+          '&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active': {
+            backgroundColor:
+              mode === 'light'
+                ? alpha(hexPalette.text.light.primary, 0.21)
+                : alpha(hexPalette.text.dark.primary, 0.21)
           },
-          "&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover": {
-            backgroundColor: mode === 'light' ? alpha(hexPalette.text.light.primary, 0.21) : alpha(hexPalette.text.dark.primary, 0.21),
+          '&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover': {
+            backgroundColor:
+              mode === 'light'
+                ? alpha(hexPalette.text.light.primary, 0.21)
+                : alpha(hexPalette.text.dark.primary, 0.21)
           },
-          "&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner": {
-            backgroundColor: mode === 'light' ? alpha(hexPalette.text.light.primary, 0.21) : alpha(hexPalette.text.dark.primary, 0.21),
+          '&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner': {
+            backgroundColor:
+              mode === 'light'
+                ? alpha(hexPalette.text.light.primary, 0.21)
+                : alpha(hexPalette.text.dark.primary, 0.21)
           },
-          "& div.ProseMirror": {
+          '& div.ProseMirror': {
             // backgroundColor: "red",
-            margin:"0 30px",
-            width: "calc(100% - 120px - 30px)",
-            minHeight: "410px",
-            maxHeight: "410px",
-            overflow: "auto",
-            "&:focus": {
+            margin: '30px',
+            width: 'calc(100% - 120px - 30px)',
+            minHeight: '460px',
+            maxHeight: '450px',
+            overflow: 'auto',
+            borderRadius: '5px',
+            '&:focus': {
               outline: `1px solid ${mode === 'light' ? alpha(hexPalette.text.light.primary, 0.21) : alpha(hexPalette.text.dark.primary, 0.21)}`
             }
+          },
+          '& div#tippy-2, & div#tippy-1': {
+            maxWidth: 'none',
+          },
+          '& .tippy-box': {
+            maxWidth: 'max-content',
+            minWidth: 'max-content',
+            width: 'auto',
           }
-        },
+        }
       }
     },
     MuiCheckbox: {

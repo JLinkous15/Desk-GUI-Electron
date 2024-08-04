@@ -1,4 +1,4 @@
-import { NoteInfo } from "../../../shared/models"
+import { NoteInfo } from '../../../shared/models'
 
 //This is a deprecated crud layer that moved across the IPC via context bridging.
 //The reason it's being 86'd is for two reasons
@@ -19,11 +19,16 @@ import { NoteInfo } from "../../../shared/models"
 
 export const loadNotes = async (): Promise<NoteInfo[]> => {
   const notes = await window.context.getNotes()
-  
-  return notes.sort((a, b) => b.lastEditTime - a.lastEditTime )
-} 
+
+  return notes.sort((a, b) => b.lastEditTime - a.lastEditTime)
+}
 
 export const readNote = async (title: string) => {
   const noteContent = await window.context.readNote(title)
   return noteContent
+}
+
+export const getGroupedDaily = async (tickers: string[], auth: string) => {
+  const stockInfo = await window.context.getGroupedDaily(tickers, auth)
+  return stockInfo
 }

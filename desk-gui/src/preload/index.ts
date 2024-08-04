@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-import { GetNotes, ReadNote } from '@shared/types'
+import { GetGroupedDaily, GetNotes, ReadNote } from '@shared/types'
 
 const api = {}
 
@@ -12,6 +12,7 @@ if (process.contextIsolated) {
       locale: navigator.language,
       getNotes: (...args: Parameters<GetNotes>) => ipcRenderer.invoke('getNotes', ...args),
       readNote: (...args: Parameters<ReadNote>) => ipcRenderer.invoke('readNote', ...args),
+      getGroupedDaily: (...args: Parameters<GetGroupedDaily>) => ipcRenderer.invoke('getDailyStocks', ...args)
     })
   } catch (error) {
     console.error(error)

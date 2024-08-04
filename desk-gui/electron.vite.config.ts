@@ -2,9 +2,11 @@ import { resolve } from 'path'
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 import react from '@vitejs/plugin-react'
 import svgr from "vite-plugin-svgr"
+import { loadEnv } from 'vite'
 
-export default defineConfig({
-  main: {
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '')
+  return {  main: {
     build: {
       rollupOptions: {
         input: {
@@ -12,7 +14,14 @@ export default defineConfig({
         }
       }
     },
-    plugins: [react(), externalizeDepsPlugin(), svgr({ include: "**/*.svg", svgrOptions: {plugins: ["@svgr/plugin-jsx"]}})],
+    plugins: [
+      react(), 
+      externalizeDepsPlugin(), 
+      svgr({ 
+        include: "**/*.svg", 
+        svgrOptions: {plugins: ["@svgr/plugin-jsx"]}
+      })
+    ],
     resolve: {
       alias: {
         '@lib': resolve('src/main/lib'),
@@ -31,6 +40,9 @@ export default defineConfig({
     },
   },
   renderer: {
+    define: {
+      'process.env': env
+    },
     build: {
       rollupOptions: {
         input: {
@@ -51,4 +63,4 @@ export default defineConfig({
     },
     plugins: [react(), svgr()]
   }
-})
+}})
