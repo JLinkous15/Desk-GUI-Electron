@@ -32,3 +32,8 @@ export const getGroupedDaily = async (tickers: string[], auth: string) => {
   const stockInfo = await window.context.getGroupedDaily(tickers, auth)
   return stockInfo
 }
+
+export const getAllTickers = async (auth: string) => {
+  const tickerInfo = await window.context.getAllTickers(auth)
+  return tickerInfo
+}

@@ -138,12 +138,12 @@ const getTheme = (mode: PaletteMode) => ({
             }
           },
           '& div#tippy-2, & div#tippy-1': {
-            maxWidth: 'none',
+            maxWidth: 'none'
           },
           '& .tippy-box': {
             maxWidth: 'max-content',
             minWidth: 'max-content',
-            width: 'auto',
+            width: 'auto'
           }
         }
       }

@@ -1,12 +1,14 @@
-import { styled } from "@mui/material/styles"
-import { getGroupedDaily } from "../../store"
-import { GroupedDaily } from "@shared/models"
-import { useEffect, useState } from "react"
-import { AbsoluteTopRight } from "@components/Common/AbsoluteTopRight"
-import { TactileIconButton } from "@components/Common/TactileIconButton"
-import EditIcon from '@mui/icons-material/Edit';
-import { StyledDialog } from "@components/Common/GlassDialog"
-import { GlassDialogContent } from "@components/Common/GlassDialogContent"
+//Static Imports
+import { AbsoluteTopRight } from '@components/Common/AbsoluteTopRight'
+import { TactileIconButton } from '@components/Common/TactileIconButton'
+import EditIcon from '@mui/icons-material/Edit'
+import { styled } from '@mui/material/styles'
+import { GroupedDaily } from '@shared/models'
+import { Suspense, useEffect, useState } from 'react'
+import { getGroupedDaily } from '../../store'
+import { lazyImport } from '@utils/lazyImport'
+//Dynamic Imports
+const EditStocksModal = lazyImport('../panels/Stocks/EditStocksModal', 'EditStocksModal')
 
 const StyledStocksDiv = styled('div')({
   position: 'relative',
@@ -23,17 +25,16 @@ export const Stocks = () => {
   const [open, setOpen] = useState<boolean>(false)
 
   useEffect(() => {
-    const storedTickers = localStorage.getItem("jlTickers")
-    if (storedTickers){
+    const storedTickers = localStorage.getItem('jlTickers')
+    if (storedTickers) {
       const parsedTickers = JSON.parse(storedTickers)
       setTickers(parsedTickers)
     }
   }, [])
-  
+
   useEffect(() => {
-    if (tickers.length > 0 && process.env.VITE_POLYGON_API_KEY){
-      getGroupedDaily(tickers, process.env.VITE_POLYGON_API_KEY)
-      .then(setStocks)
+    if (tickers.length > 0 && process.env.VITE_POLYGON_API_KEY) {
+      getGroupedDaily(tickers, process.env.VITE_POLYGON_API_KEY).then(setStocks)
     }
   }, [tickers])
 
@@ -48,23 +49,18 @@ export const Stocks = () => {
   return (
     <StyledStocksDiv>
       <AbsoluteTopRight>
-        <TactileIconButton
-          onClick={handleEditModalOpen}
-          >
+        <TactileIconButton onClick={handleEditModalOpen}>
           <EditIcon />
         </TactileIconButton>
       </AbsoluteTopRight>
-      <StyledDialog 
-        open={open} 
-        onClose={handleEditModalClose}
-        fullScreen
-      >
-        <GlassDialogContent
+      <Suspense fallback={''}>
+        <EditStocksModal
           handleClose={handleEditModalClose}
-        >
-          foobar
-        </GlassDialogContent>
-      </StyledDialog>
+          tabs={tickers}
+          setTabs={setTickers}
+          open={open}
+        />
+      </Suspense>
     </StyledStocksDiv>
   )
 }

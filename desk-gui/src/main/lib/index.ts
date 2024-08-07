@@ -1,6 +1,12 @@
-import { appDirectoryName, fileEncoding, groupedDailyBaseUrl } from '@shared/constants'
-import { NoteInfo } from '@shared/models'
-import { GetGroupedDaily, GetNotes, ReadNote } from '@shared/types'
+import {
+  appDirectoryName,
+  exchangesURL,
+  fileEncoding,
+  groupedDailyBaseUrl,
+  tickersURL
+} from '@shared/constants'
+import { AllTickers, Exchanges, NoteInfo, TickerResponse } from '@shared/models'
+import { GetAllTickers, GetExchanges, GetGroupedDaily, GetNotes, ReadNote } from '@shared/types'
 import fs from 'fs-extra'
 const { ensureDir, readdir, stat, readFile } = fs
 import { homedir } from 'os'
@@ -34,25 +40,86 @@ export const readNote: ReadNote = async (filename) => {
   return readFile(`${rootDir}/${filename}.md`, { encoding: fileEncoding })
 }
 
-export const getGroupedDaily = async (tickers: string[], auth: string): Promise<GetGroupedDaily[]> => {
+export const getExchanges: GetExchanges = async (auth: string) => {
+  const headers = new Headers()
+  headers.set('Authorization', auth)
+  headers.set('Content-Type', 'application/json')
+
+  let exchangeAcronyms: string[] = []
+
+  const url = exchangesURL
+  await fetch(url, {
+    headers: headers
+  })
+  .then((res) => res.json())
+  .then((res: Exchanges) => {
+    if (res) {
+      res.results.forEach((result) => {
+        exchangeAcronyms.push(result.acronym)}
+      )
+    }
+  })
+
+  return exchangeAcronyms
+}
+
+export const getAllTickers: GetAllTickers = async(auth: string) => {
+  const exchanges = await getExchanges(auth)
+
+  if (exchanges.length > 0) {
+    const headers = new Headers()
+    headers.set('Authorization', auth)
+    headers.set('Content-Type', 'application/json')
+
+    const url = tickersURL
+
+    const tickers: TickerResponse['results'] = []
+
+    const promises = exchanges.map((exchange) => {
+      const queryParam = `?exchange=${exchange}`
+      return (
+        fetch(url + queryParam, {
+          headers: headers
+        })
+        .then((res) => res.json())
+        .then((res: TickerResponse) => {
+          tickers.concat(res.results)
+        })
+      )
+    })
+
+    const handleGroupBy = ({market}) => market
+
+    Promise.all(promises)
+    return Object.groupBy(tickers, handleGroupBy)
+  }
+
+
+}
+
+export const getGroupedDaily = async (
+  tickers: string[],
+  auth: string
+): Promise<GetGroupedDaily[]> => {
   let date = new Date()
   const formatedDate = date.toISOString().split('T')[0]
 
   const headers = new Headers()
   headers.set('Authorization', auth)
-  headers.set('Content-Type', "application/json")
+  headers.set('Content-Type', 'application/json')
 
   let stockResponse: GetGroupedDaily[] = []
 
   const stocks = tickers.map((ticker) => {
-    const url = [groupedDailyBaseUrl, ticker, formatedDate].join("/")
+    const url = [groupedDailyBaseUrl, ticker, formatedDate].join('/')
     fetch(url, {
       headers: headers
     })
-    .then(res => res.json())
-    .then(res => {
-      if (!res) return
-      stockResponse.push(res)})
+      .then((res) => res.json())
+      .then((res) => {
+        if (!res) return
+        stockResponse.push(res)
+      })
   })
   await Promise.all(stocks)
 

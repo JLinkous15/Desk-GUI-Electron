@@ -15,7 +15,7 @@ export const AbsoluteTopRight = ({ children, ...props }: AbsoluteTopRightProps) 
       right={0}
       top={0}
       margin={0}
-      padding={"37px"}
+      padding={'37px'}
       sx={{
         backgroundColor: theme.palette.background.default,
         zIndex: 100

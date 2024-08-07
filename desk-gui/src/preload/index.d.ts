@@ -9,6 +9,7 @@ declare global {
       getNotes: GetNotes
       readNote: ReadNote
       getGroupedDaily: GetGroupedDaily
+      getAllTickers: GetAllTickers
     }
   }
 }
