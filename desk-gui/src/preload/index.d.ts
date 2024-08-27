@@ -1,4 +1,5 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
+import { GetNotes, ReadNote, GetGroupedDaily, GetAllTickers } from '../shared/types'
 
 declare global {
   interface Window {
